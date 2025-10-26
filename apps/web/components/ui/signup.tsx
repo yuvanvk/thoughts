@@ -3,7 +3,7 @@ import { Navbar } from "@/components/landing/navbar";
 import { Label } from "@workspace/ui/components/label";
 import { Input } from "@workspace/ui/components/input";
 
-import { ArrowLeft, ArrowRight, Asterisk } from "lucide-react";
+import { ArrowRight, Asterisk } from "lucide-react";
 
 
 export const SignUp = () => (
@@ -86,7 +86,7 @@ export const SignUp = () => (
               />
           </div>
 
-          <button className="px-6 py-4 flex items-center justify-between bg-[#333333] mt-4 cursor-pointer">
+          <button className="px-6 py-4 flex items-center justify-between bg-[#333333] hover:bg-neutral-800 transition mt-4 cursor-pointer">
             <div className="font-mono font-medium">Signup</div>
             <div className="bg-white px-3 py-2">
                 <ArrowRight className="text-black" size={20}/>
