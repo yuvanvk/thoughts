@@ -9,7 +9,7 @@ export const Appbar = () => {
             </div>
 
             <div className="flex items-center gap-x-3">
-                <Avatar>
+                <Avatar className="!rounded-none">
                     <AvatarImage src={"https://github.com/shadcn.png"}/>
                     <AvatarFallback>AV</AvatarFallback>
                 </Avatar>

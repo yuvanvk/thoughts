@@ -18,11 +18,11 @@ export const Home = () => {
             Most Visited
           </div>
           <Separator className="my-3" />
-          <div className="space-y-2">
+          <div className="space-y-5 mt-5">
             <BlogCard variant="row" />
-            <Separator className="my-3" />
+            
             <BlogCard variant="row" />
-            <Separator className="my-3" />
+            
             <BlogCard variant="row" />
           </div>
         </div>
@@ -35,7 +35,7 @@ export const Home = () => {
         <Separator className="my-3" />
         <div className="grid grid-cols-4 gap-x-5 mt-6">
           {[0, 1, 2, 3].map((idx) => (
-            <div className="col-span-1">
+            <div key={idx} className="col-span-1">
               <BlogCard variant="col" />
             </div>
           ))}
@@ -57,6 +57,11 @@ export const Home = () => {
             <CategoryCard title="Travel" imageUrl={idx} />
           ))}
         </div>
+      </div>
+
+      {/* Footer */}
+      <div className="py-5 px-8">
+          <div className="text-lg text-end tracking-tighter text-neutral-500 font-mono underline">Crafted by <span className="text-white font-sans cursor-pointer font-medium">@yvk</span></div>
       </div>
     </div>
   );

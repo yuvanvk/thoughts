@@ -41,7 +41,7 @@ export const BlogCard = ({ variant }: BlogCardProps) => {
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-2">
-            <Avatar>
+            <Avatar  className="!rounded-none">
               <AvatarImage src={"https://github.com/shadcn.png"} />
               <AvatarFallback>AV</AvatarFallback>
             </Avatar>
