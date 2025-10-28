@@ -1,16 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { Separator } from "@workspace/ui/components/separator";
-import { BlogCard } from "./blog/blog-card";
-import { CategoryCard } from "./category-card";
+import { BlogCard } from "./blog-card";
+import { CategoryCard } from "@/components/ui/category-card";
 
 export const Home = () => {
   return (
     <div className="max-w-6xl mx-auto pt-32 pb-5">
       {/* hero-section */}
       <div className=" flex flex-col gap-y-5">
-        <div className="min-w-5xl w-full h-[600px]  relative overflow-hidden">
+        <div className="min-w-5xl w-full h-[500px]  relative overflow-hidden">
           <Image src="/images/travel.jpg" alt="hotair-ballon" fill />
         </div>
         <div className="my-20">
