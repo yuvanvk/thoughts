@@ -3,7 +3,7 @@ import { Label } from "@workspace/ui/components/label";
 
 export const Settings = () => {
   return (
-    <div className="max-w-4xl mx-auto py-28 border-x h-screen">
+    <div className="max-w-6xl mx-auto py-28 border-x h-screen">
       <div className="px-16 py-4 flex flex-col">
         <div className="space-y-3">
           <div className="text-5xl font-medium font-sans">Settings</div>

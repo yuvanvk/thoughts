@@ -10,7 +10,7 @@ export const DetailedBlog = () => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col max-w-7xl mx-auto py-20 space-y-3">
+    <div className="flex flex-col max-w-6xl mx-auto py-20 space-y-3">
       <div className="w-fit">
         <Button
           variant={"secondary"}
