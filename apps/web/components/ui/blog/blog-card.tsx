@@ -21,7 +21,7 @@ export const BlogCard = ({ variant }: BlogCardProps) => {
     <div className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border bg-[#121212]`}>
       <div className={`${isColumn ? "w-full aspect-video" : "w-40 h-40 aspect-square"} relative `}>
         <Image
-          src={"/images/hotair.jpg"}
+          src={"/images/sport.jpg"}
           alt="h"
           className="object-cover"
           fill

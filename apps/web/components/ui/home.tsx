@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Separator } from "@workspace/ui/components/separator";
-import { BlogCard } from "./blog-card";
+import { BlogCard } from "./blog/blog-card";
 import { CategoryCard } from "./category-card";
 
 export const Home = () => {
@@ -11,7 +11,7 @@ export const Home = () => {
       {/* hero-section */}
       <div className="w-full h-[600px] flex gap-x-8">
         <div className="min-w-5xl h-full relative overflow-hidden">
-          <Image src="/images/hotair.jpg" alt="hotair-ballon" fill />
+          <Image src="/images/travel.jpg" alt="hotair-ballon" fill />
         </div>
         <div className="flex-1">
           <div className="text-3xl font-medium font-sans capitalize">
