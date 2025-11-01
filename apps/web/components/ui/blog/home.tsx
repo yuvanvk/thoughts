@@ -53,7 +53,7 @@ export const Home = () => {
             "/images/Science.jpg",
             "/images/fashion.jpg",
           ].map((idx) => (
-            <CategoryCard title="Travel" imageUrl={idx} />
+            <CategoryCard key={idx} title="Travel" imageUrl={idx} />
           ))}
         </div>
       </div>

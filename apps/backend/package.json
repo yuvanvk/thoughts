@@ -6,8 +6,12 @@
   },
   "packageManager": "pnpm@10.4.1",
   "dependencies": {
-    "@workspace/db": "workspace:*",
     "@trpc/server": "^11.6.0",
+    "@workspace/db": "workspace:*",
+    "bcrypt": "^6.0.0",
     "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
   }
 }
