@@ -17,10 +17,7 @@ export const authRouter = router({
         .output(z.boolean())
         .mutation(async (opts) => {
             try {
-                const email = opts.input.email;
-                const password = opts.input.password;
-                const firstName = opts.input.firstName;
-                const lastName = opts.input.lastName;
+               const { email, password, firstName, lastName }  = opts.input;
 
                 const existingUser = await prisma.user.findUnique({
                     where: {
@@ -59,9 +56,8 @@ export const authRouter = router({
         .output(z.boolean())
         .query(async (opts) => {
             try {
-                const email = opts.input.email;
-                const password = opts.input.password;
-
+               const { email, password } = opts.input;
+               
                 const user = await prisma.user.findUnique({
                     where: {
                         email,

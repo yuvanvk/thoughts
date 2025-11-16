@@ -1,7 +1,12 @@
+"use client";
+
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
+import { useRouter } from "next/navigation";
 
 export const Settings = () => {
+  const router = useRouter();
+
   return (
     <div className="max-w-6xl mx-auto py-28 border-x h-screen">
       <div className="px-16 py-4 flex flex-col">
@@ -65,7 +70,7 @@ export const Settings = () => {
             </div>
 
             <div className="flex items-center justify-between font-mono text-sm">
-                <button className="bg-[#121212] px-5 py-2 border">
+                <button onClick={() => router.push("/home")} className="bg-[#121212] px-5 py-2 border cursor-pointer">
                     Cancel
                 </button>
                 <button className="bg-white text-black px-5 py-2 border">
