@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import prisma from "@workspace/db/prisma";
 
 import * as z from "zod";
+import { auth } from "@workspace/auth/better-auth";
 
 export const authRouter = router({
     signUp: publicProcedure
@@ -14,7 +15,7 @@ export const authRouter = router({
                 lastName: z.string(),
             })
         )
-        .output(z.boolean())
+        
         .mutation(async (opts) => {
             try {
                const { email, password, firstName, lastName }  = opts.input;
@@ -27,23 +28,22 @@ export const authRouter = router({
                 });
 
                 if (existingUser) {
-                    return false;
+                    return { message: "User already exists", status: 411 };
                 }
 
-                const hashedPassword = await bcrypt.hash(password, 10);
-                await prisma.user.create({
-                    data: {
+                const data = await auth.api.signUpEmail({
+                    body: {
+                        name: `${firstName} ${lastName}`,
                         email,
-                        password: hashedPassword,
-                        firstName,
-                        lastName,
-                    },
-                });
+                        password,
+                        callbackURL: "http://localhost:3000/home"
+                    }
+                })
 
-                return true;
+                return { message: "User created successfully", status: 200 };
             } catch (error) {
                 console.log(error);
-                return false;
+                return { message: "Something went wrong. Please try again later", status: 500 };
             }
         }),
     login: publicProcedure

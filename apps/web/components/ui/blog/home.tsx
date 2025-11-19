@@ -11,6 +11,10 @@ export const Home = () => {
       <div className=" flex flex-col gap-y-5">
         <div className="min-w-5xl w-full h-[500px]  relative overflow-hidden">
           <Image src="/images/travel.jpg" alt="hotair-ballon" fill />
+          <div className="absolute bottom-5 left-3">
+            <div className="text-4xl font-medium font-sans">How to Get Rich?</div>
+            <div className="text-lg font-mono text-neutral-300">A guide to become rich in 1 year</div>
+          </div>
         </div>
         <div className="my-20">
           <div className="text-3xl font-medium font-sans capitalize">

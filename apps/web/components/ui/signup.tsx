@@ -1,15 +1,32 @@
+"use client";
+
 import Link from "next/link";
 import { Navbar } from "@/components/landing/navbar";
 import { Label } from "@workspace/ui/components/label";
 import { Input } from "@workspace/ui/components/input";
 
 import { ArrowRight, Asterisk } from "lucide-react";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 
 
-export const SignUp = () => (
-  <>
+export const SignUp = () => {
+  const [userDetails, setUserDetails] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: ""
+  })
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+       
+    }
+  })
+
+  return <>
     <Navbar />
-    <div className="max-w-4xl mx-auto border h-screen">
+    <div className="max-w-4xl mx-auto border-x h-screen">
       <div className="px-20 py-36 flex flex-col space-y-4">
         <h1 className="font-medium text-5xl max-w-2xl tracking-tighter">
           Be part of Thoughts. Share what matters to you.
@@ -40,6 +57,10 @@ export const SignUp = () => (
                 first name
               </Label>
               <Input
+                onChange={(e) => setUserDetails({
+                  ...userDetails,
+                  firstName: e.target.value
+                })}
                 placeholder="Yuvan"
                 className="font-sans uppercase !bg-black !px-4 !py-6 min-w-1/2"
               />
@@ -53,6 +74,10 @@ export const SignUp = () => (
                 last name
               </Label>
               <Input
+                onChange={(e) => setUserDetails({
+                  ...userDetails,
+                  lastName: e.target.value
+                })}
                 placeholder="kappala"
                 className="font-sans uppercase !bg-black !px-4 !py-6 min-w-1/2"
               />
@@ -67,6 +92,10 @@ export const SignUp = () => (
                 email
               </Label>
               <Input
+                onChange={(e) => setUserDetails({
+                  ...userDetails,
+                  email: e.target.value
+                })}
                 placeholder="yuvanvk@gmail.com"
                 className="font-sans uppercase !bg-black !px-4 !py-6 "
               />
@@ -80,13 +109,17 @@ export const SignUp = () => (
                 password
               </Label>
               <Input
+              onChange={(e) => setUserDetails({
+                ...userDetails,
+                password: e.target.value
+              })}
               type="password"
                 placeholder=""
                 className="font-sans uppercase !bg-black !px-4 !py-6 "
               />
           </div>
 
-          <button className="px-6 py-4 flex items-center justify-between bg-[#333333] hover:bg-neutral-800 transition mt-4 cursor-pointer">
+          <button type="submit" className="px-6 py-4 flex items-center justify-between bg-[#333333] hover:bg-neutral-800 transition mt-4 cursor-pointer">
             <div className="font-mono font-medium">Signup</div>
             <div className="bg-white px-3 py-2">
                 <ArrowRight className="text-black" size={20}/>
@@ -96,4 +129,4 @@ export const SignUp = () => (
       </div>
     </div>
   </>
-);
+};
