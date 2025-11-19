@@ -1,4 +1,3 @@
-
 import { Navbar } from "@/components/landing/navbar";
 
 
@@ -18,7 +17,7 @@ export default function Page() {
             A minimal blogging space designed for those who value expression
             over perfection. Share ideas that matter.
           </p>
-          
+
         </div>
       </div>
     </div>

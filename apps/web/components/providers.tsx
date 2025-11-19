@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
+import type { AppRouter } from "@workspace/backend/router";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
+import { Toaster } from "@workspace/ui/components/sonner"
 import { TRPCProvider } from "@/lib/trpc";
-import type { AppRouter } from "@workspace/backend/router";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -19,7 +20,7 @@ function makeQueryClient() {
 
 let browerQueryClient: QueryClient | undefined = undefined;
 
-function getQuertClient() {
+function getQueryClient() {
   if (typeof window === "undefined") {
     return makeQueryClient();
   } else {
@@ -29,7 +30,7 @@ function getQuertClient() {
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const queryClient = getQuertClient();
+  const queryClient = getQueryClient();
 
   const [trpcClient] = React.useState(() =>
     createTRPCClient<AppRouter>({
@@ -51,6 +52,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
           {children}
+          <Toaster position="top-center"/>
         </TRPCProvider>
       </QueryClientProvider>
     </NextThemesProvider>

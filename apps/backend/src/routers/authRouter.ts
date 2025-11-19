@@ -15,7 +15,6 @@ export const authRouter = router({
                 lastName: z.string(),
             })
         )
-        
         .mutation(async (opts) => {
             try {
                const { email, password, firstName, lastName }  = opts.input;
