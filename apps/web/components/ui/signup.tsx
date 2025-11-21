@@ -135,10 +135,10 @@ export const SignUp = () => {
             </div>
 
             <button
-              onClick={() => {
+              onClick={async () => {
                 console.log("hi there");
                 
-                createUser.mutate({
+                await createUser.mutateAsync({
                   firstName: userDetails.firstName,
                   lastName: userDetails.lastName,
                   password: userDetails.password,
