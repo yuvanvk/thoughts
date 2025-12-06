@@ -3,9 +3,31 @@
 import { Input } from "@workspace/ui/components/input"
 import { Label } from "@workspace/ui/components/label"
 import { ArrowRight, Asterisk } from "lucide-react"
+import { useState } from "react"
 import Link from "next/link"
+import { useTRPC } from "@/lib/trpc"
+import { useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 export const Login = () => {
+    const [loginDetails, setLoginDetails] = useState({
+      email: "",
+      password: ""
+    });
+
+    const trpc = useTRPC();
+    const router = useRouter();
+
+    const login = useMutation(trpc.auth.login.mutationOptions({
+      onSuccess: () => {
+        toast.success("Logged In successfully")
+        router.push("/home")
+      },
+      onError: () => {
+        toast.error("Something went wrong. Please try again later")
+      }
+    }))
 
     return (
       <div className="max-w-4xl mx-auto border h-screen">
@@ -38,6 +60,12 @@ export const Login = () => {
                 email
               </Label>
               <Input
+              onChange={(e) => {
+                setLoginDetails({
+                  ...loginDetails,
+                  email: e.target.value
+                })
+              }}
                 placeholder="yuvanvk@gmail.com"
                 className="font-sans uppercase !bg-black !px-4 !py-6 "
               />
@@ -51,13 +79,24 @@ export const Login = () => {
                 password
               </Label>
               <Input
+              onChange={(e) => {
+                setLoginDetails({
+                  ...loginDetails,
+                  password: e.target.value
+                })
+              }}
               type="password"
                 placeholder=""
                 className="font-sans uppercase !bg-black !px-4 !py-6 "
               />
           </div>
 
-          <button className="px-6 py-4 flex justify-between items-center gap-x-3 bg-[#121212]  mt-4 cursor-pointer w-full border">
+          <button onClick={async () => {
+            await login.mutateAsync({
+              email: loginDetails.email,
+              password: loginDetails.password
+            })
+          }} className="px-6 py-4 flex justify-between items-center gap-x-3 bg-[#121212]  mt-4 cursor-pointer w-full border">
             <div className="font-mono font-medium">Log In</div>
             <div className="bg-white px-3 py-2">
                 <ArrowRight className="text-black" size={20}/>
