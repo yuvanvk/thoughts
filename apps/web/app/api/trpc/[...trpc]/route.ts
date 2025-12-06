@@ -4,11 +4,10 @@ import { NextRequest } from "next/server";
 
 
 export const handler = (req: NextRequest) => {
-    fetchRequestHandler({
+    return fetchRequestHandler({
         endpoint: "/api/trpc",
         req,
         router: appRouter,
-        
     })
 }
 

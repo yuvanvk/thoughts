@@ -10,6 +10,7 @@ import { useTRPC } from "@/lib/trpc";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const SignUp = () => {
   const trpc = useTRPC();
@@ -20,11 +21,13 @@ export const SignUp = () => {
     email: "",
     password: "",
   });
-  console.log(userDetails.password);
+  
+  const router = useRouter();
 
   const createUser = useMutation(trpc.auth.signUp.mutationOptions({
     onSuccess: () => {
       toast.success("User created successfully.")
+      router.push("/home");
     },
     onError: () => {
       toast.error("Something went wrong")
