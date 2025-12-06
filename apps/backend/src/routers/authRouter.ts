@@ -1,9 +1,8 @@
 import { publicProcedure, router } from "../trpc";
-import bcrypt from "bcrypt";
 import prisma from "@workspace/db/prisma";
+import { auth } from "@workspace/auth/better-auth";
 
 import * as z from "zod";
-import { auth } from "@workspace/auth/better-auth";
 
 export const authRouter = router({
   signUp: publicProcedure
@@ -22,7 +21,6 @@ export const authRouter = router({
         const existingUser = await prisma.user.findUnique({
           where: {
             email,
-            password,
           },
         });
 
@@ -55,7 +53,7 @@ export const authRouter = router({
         password: z.string().min(5),
       })
     )
-    .query(async (opts) => {
+    .mutation(async (opts) => {
       try {
         const { email, password } = opts.input;
 
@@ -81,7 +79,7 @@ export const authRouter = router({
         return { message: "Logged In successfully", status: 200 };
       } catch (error) {
         console.log(error);
-        return false;
+        return { message: "Something went wrong. Please try again later", status: 500 };
       }
     }),
 });

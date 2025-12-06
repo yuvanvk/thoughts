@@ -20,6 +20,7 @@ export const SignUp = () => {
     email: "",
     password: "",
   });
+  console.log(userDetails.password);
 
   const createUser = useMutation(trpc.auth.signUp.mutationOptions({
     onSuccess: () => {
@@ -136,8 +137,7 @@ export const SignUp = () => {
 
             <button
               onClick={async () => {
-                console.log("hi there");
-                
+                                
                 await createUser.mutateAsync({
                   firstName: userDetails.firstName,
                   lastName: userDetails.lastName,
