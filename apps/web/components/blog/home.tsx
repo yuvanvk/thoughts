@@ -5,7 +5,7 @@ import { BlogCard } from "./blog-card";
 import { CategoryCard } from "@/components/ui/category-card";
 
 
-export const Home = async () => {
+export const Home = () => {
   
   return (
     <div className="max-w-6xl mx-auto pt-32 pb-5">
