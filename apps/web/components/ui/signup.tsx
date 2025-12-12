@@ -12,6 +12,8 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
+import { authClient } from "@/lib/auth-client";
+authClient;
 export const SignUp = () => {
   const trpc = useTRPC();
 
@@ -21,18 +23,20 @@ export const SignUp = () => {
     email: "",
     password: "",
   });
-  
+
   const router = useRouter();
 
-  const createUser = useMutation(trpc.auth.signUp.mutationOptions({
-    onSuccess: () => {
-      toast.success("User created successfully.")
-      router.push("/home");
-    },
-    onError: () => {
-      toast.error("Something went wrong")
-    }
-  }));
+  const createUser = useMutation(
+    trpc.auth.signUp.mutationOptions({
+      onSuccess: () => {
+        toast.success("User created successfully.");
+        router.push("/home");
+      },
+      onError: () => {
+        toast.error("Something went wrong");
+      },
+    })
+  );
 
   return (
     <>
@@ -140,13 +144,24 @@ export const SignUp = () => {
 
             <button
               onClick={async () => {
-                                
-                await createUser.mutateAsync({
-                  firstName: userDetails.firstName,
-                  lastName: userDetails.lastName,
-                  password: userDetails.password,
+                const response = await createUser.mutateAsync({
                   email: userDetails.email,
-                })
+                });
+
+                if (response.status !== 200) {
+                  toast.error(response.message);
+                }
+
+                if (response.status === 200) {
+                  await authClient.signUp.email({
+                    name: `${userDetails.firstName} ${userDetails.lastName}`,
+                    email: userDetails.email,
+                    password: userDetails.password,
+                    callbackURL: "http://localhost:3000/home",
+                  });
+
+                  toast.success("Account created successfully");
+                }
               }}
               type="submit"
               className="px-6 py-4 flex items-center justify-between bg-[#333333] hover:bg-neutral-800 transition mt-4 cursor-pointer"

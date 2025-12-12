@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/landing/navbar";
 
-
 export default function Page() {
+
   return (
     <div className="w-screen h-screen">
       <Navbar />
