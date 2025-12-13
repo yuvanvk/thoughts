@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
   id            String    @id
   name          String
@@ -18,6 +17,7 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  blogs         Blog[]
 
   @@unique([email])
   @@map("user")
@@ -68,3 +68,23 @@ model Verification {
   @@map("verification")
 }
 
+model Blog {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId String
+  tags   Tag[]  @relation("BlogTags")
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("blog")
+}
+
+model Tag {
+  id   String @id @default(uuid())
+  name String @unique
+  blog Blog[] @relation("BlogTags")
+}
