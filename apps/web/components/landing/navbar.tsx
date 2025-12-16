@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 export const Navbar = () => {
     const router = useRouter();
 
-    return <div className="fixed flex items-center justify-between w-full px-16 py-2 uppercase bg-black border-b">
+    return <div className="fixed flex items-center justify-between w-full px-3 md:px-8 xl:px-16 py-2 uppercase bg-black border-b">
         <div onClick={() => router.push("/")} className="uppercase cursor-pointer">
             <svg
             fill="none"

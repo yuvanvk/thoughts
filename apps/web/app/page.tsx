@@ -4,15 +4,15 @@ export default function Page() {
   return (
     <div className="w-screen h-screen">
       <Navbar />
-      <div className="w-full h-full max-w-7xl mx-auto py-40 flex items-center justify-between">
+      <div className="w-full h-full xl:max-w-7xl mx-auto py-40 flex items-center justify-between ">
         <div className="flex flex-col items-start space-y-5">
-          <button className="px-8 py-3 bg-neutral-700 text-neutral-100 uppercase font-medium font-mono text-sm w-fit">
+          <button className="px-8 py-3 bg-neutral-700 text-neutral-100 uppercase font-medium font-mono text-xs w-fit">
             A minimal Blogging platform
           </button>
-          <h1 className="font-sans text-7xl font-medium  max-w-xl">
+          <h1 className="font-sans text-4xl  md:text-7xl font-medium  max-w-xl">
             Simple words. Endless impact.
           </h1>
-          <p className="font-mono text-xl  text-neutral-400 max-w-2xl">
+          <p className="font-mono text-sm md:text-xl  text-neutral-400 max-w-2xl">
             A minimal blogging space designed for those who value expression
             over perfection. Share ideas that matter.
           </p>

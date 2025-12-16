@@ -3,13 +3,14 @@
 import Image from "next/image";
 import { BlogCard } from "./blog-card";
 import { CategoryCard } from "@/components/ui/category-card";
+import { PersonalBrand } from "../ui/personal-brand";
 
 
 export const Home = () => {
   
   return (
     <div className="max-w-6xl mx-auto pt-32 pb-5">
-      {/* hero-section */}
+
       <div className=" flex flex-col gap-y-5">
         <div className="min-w-5xl w-full h-[500px]  relative overflow-hidden">
           <Image src="/images/travel.jpg" alt="hotair-ballon" fill />
@@ -29,9 +30,7 @@ export const Home = () => {
 
           <div className="space-y-5 mt-5">
             <BlogCard variant="row" />
-
             <BlogCard variant="row" />
-
             <BlogCard variant="row" />
           </div>
         </div>
@@ -69,14 +68,7 @@ export const Home = () => {
       </div>
 
       {/* Footer */}
-      <div className=" px-8">
-        <div className="text-lg text-end tracking-tighter text-neutral-500 font-mono underline">
-          Crafted by{" "}
-          <span className="text-white font-sans cursor-pointer font-medium">
-            @yvk
-          </span>
-        </div>
-      </div>
+      <PersonalBrand />
     </div>
   );
 };
