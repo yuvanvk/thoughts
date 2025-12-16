@@ -25,11 +25,11 @@ export const Home = () => {
           </div>
         </div>
         <div className="my-20">
-          <div className="text-xl lg:text-3xl font-medium font-sans capitalize">
+          <div className="text-xl lg:text-3xl font-medium font-sans capitalize mb-8">
             Most Visited
           </div>
 
-          <div className="space-y-5 mt-5">
+          <div className="space-y-10 mt-5">
             <BlogCard variant={isMobile ? "col" : "row"} />
             <BlogCard variant={isMobile ? "col" : "row"} />
             <BlogCard variant={isMobile ? "col" : "row"} />
@@ -38,7 +38,7 @@ export const Home = () => {
       </div>
       {/* Latest section */}
       <div className="my-10 w-full">
-        <div className="text-xl lg:text-3xl font-medium font-sans capitalize">
+        <div className="text-xl lg:text-3xl font-medium font-sans capitalize mb-8">
           Latest Posts
         </div>
 
@@ -51,8 +51,8 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className="my-20 w-full">
-        <div className="text-xl lg:text-3xl font-medium font-sans capitalize">
+      <div className="my-40 w-full">
+        <div className="text-xl lg:text-3xl font-medium font-sans capitalize mb-8">
           Categories
         </div>
 

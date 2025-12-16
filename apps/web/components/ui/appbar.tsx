@@ -23,7 +23,7 @@ export const Appbar = () => {
 
   return (
     <div className="fixed w-full border-b z-50 bg-black ">
-      <div className="w-full xl:max-w-6xl mx-auto flex items-center justify-between px-3 xl:px-1.5 py-2">
+      <div className="w-full xl:max-w-6xl mx-auto flex items-center justify-between px-3 xl:px-4 py-2">
         <div onClick={() => router.push("/home")} className="cursor-pointer">
           <Logo />
         </div>
