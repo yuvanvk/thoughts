@@ -7,10 +7,10 @@ export const useMobile = (breakpoint = 768) => {
     const check = () => setisMobile(window.innerWidth <= breakpoint);
 
     check();
-    document.addEventListener("resize", check);
+    window.addEventListener("resize", check);
 
-    return () => document.removeEventListener("resize", check);
-  }, [breakpoint]);
+    return () => window.removeEventListener("resize", check);
+  }, [breakpoint, isMobile]);
 
   return isMobile;
 };
