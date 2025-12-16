@@ -14,36 +14,49 @@ import {
 import { Command, CommandInput } from "@workspace/ui/components/command";
 import { useRouter } from "next/navigation";
 import { Logo } from "./logo";
+import { useMobile } from "@/hooks/useMobile";
+import { MenuIcon } from "lucide-react";
 
 export const Appbar = () => {
   const router = useRouter();
+  const isMobile = useMobile();
 
   return (
     <div className="fixed w-full border-b z-50 bg-black ">
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-1.5 py-2">
+      <div className="w-full xl:max-w-6xl mx-auto flex items-center justify-between px-3 xl:px-1.5 py-2">
         <div onClick={() => router.push("/home")} className="cursor-pointer">
           <Logo />
         </div>
 
-        <div className="flex items-center gap-x-4">
-          <Command className="rounded-none  bg-[#121212] border w-80">
-            <CommandInput placeholder="Search" />
-          </Command>
-          <div
-            onClick={() => router.push("/settings")}
-            className="flex items-center gap-x-3 cursor-pointer"
-          >
-            <Tooltip>
-              <TooltipTrigger>
-                <Avatar className="!rounded-none">
-                  <AvatarImage src={"https://github.com/shadcn.png"} />
-                  <AvatarFallback>AV</AvatarFallback>
-                </Avatar>
-              </TooltipTrigger>
-              <TooltipContent className="text-[11px]">View Profile</TooltipContent>
-            </Tooltip>
+        {isMobile && (
+          <div>
+            <MenuIcon />
           </div>
-        </div>
+        )}
+
+        {!isMobile && (
+          <div className="flex items-center gap-x-4">
+            <Command className="rounded-none  bg-[#121212] border w-80">
+              <CommandInput placeholder="Search" />
+            </Command>
+            <div
+              onClick={() => router.push("/settings")}
+              className="flex items-center gap-x-3 cursor-pointer"
+            >
+              <Tooltip>
+                <TooltipTrigger>
+                  <Avatar className="!rounded-none">
+                    <AvatarImage src={"https://github.com/shadcn.png"} />
+                    <AvatarFallback>AV</AvatarFallback>
+                  </Avatar>
+                </TooltipTrigger>
+                <TooltipContent className="text-[11px]">
+                  View Profile
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
