@@ -1,11 +1,12 @@
 import { Input } from "@workspace/ui/components/input";
 import { ImagePlus } from "lucide-react";
 import { Editor } from "./editor";
+import { Toolbar } from "./toolbar";
 
 export const BlogWriting = () => {
   return (
-    <div className="flex flex-col px-5">
-      <div className="h-64 bg-neutral-900 flex flex-col items-center justify-center space-y-2">
+    <div className="flex flex-col px-3">
+      <div className="h-64 bg-neutral-900 flex flex-col items-center justify-center space-y-2 w-full">
         <ImagePlus size={30} />
         <p className="text-sm font-mono">Add a Image</p>
       </div>
@@ -19,6 +20,7 @@ export const BlogWriting = () => {
       </div>
 
       <Editor />
+      <Toolbar />
     </div>
   );
 };
