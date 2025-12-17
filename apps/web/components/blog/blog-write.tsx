@@ -1,7 +1,7 @@
 import { Input } from "@workspace/ui/components/input";
 import { ImagePlus } from "lucide-react";
 import { Editor } from "./editor";
-import { Toolbar } from "./toolbar";
+
 
 export const BlogWriting = () => {
   return (
@@ -20,7 +20,7 @@ export const BlogWriting = () => {
       </div>
 
       <Editor />
-      <Toolbar />
+
     </div>
   );
 };
