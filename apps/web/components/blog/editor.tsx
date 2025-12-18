@@ -13,12 +13,15 @@ import {
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Heading from "@tiptap/extension-heading";
-import { BubbleMenu } from "@tiptap/react/menus";
+import { BubbleMenu, FloatingMenu } from "@tiptap/react/menus";
 import { cn } from "@workspace/ui/lib/utils";
 import {
   BoldIcon,
+  Heading1Icon,
+  Heading2,
   Highlighter,
   ItalicIcon,
+  List,
   LucideStrikethrough,
   UnderlineIcon,
 } from "lucide-react";
@@ -62,7 +65,7 @@ export const Editor = () => {
       <BubbleMenu
         editor={editor}
         options={{ placement: "bottom", offset: 8, flip: true }}
-        className="border pt-2 px-2"
+        className="border pt-2 px-2 bg-neutral-800"
       >
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -114,6 +117,43 @@ export const Editor = () => {
           <Highlighter size={18} />
         </button>
       </BubbleMenu>
+
+      <FloatingMenu
+        editor={editor}
+        options={{ placement: "right-start", strategy: "absolute" }}
+      >
+        <div
+          className="px-2 pt-2 space-x-2 bg-neutral-800"
+          data-testid="floating-menu"
+        >
+          <button
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+            className={
+              editor.isActive("heading", { level: 1 }) ? "is-active" : ""
+            }
+          >
+            <Heading1Icon size={18} />
+          </button>
+          <button
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+            className={
+              editor.isActive("heading", { level: 2 }) ? "is-active" : ""
+            }
+          >
+            <Heading2 size={18} />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={editor.isActive("bulletList") ? "is-active" : ""}
+          >
+            <List size={18} />
+          </button>
+        </div>
+      </FloatingMenu>
     </EditorContext>
   );
 };
