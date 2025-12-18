@@ -65,13 +65,13 @@ export const Editor = () => {
       <BubbleMenu
         editor={editor}
         options={{ placement: "bottom", offset: 8, flip: true }}
-        className="border pt-2 px-2 bg-neutral-800"
+        className="border py-2 px-3 bg-[#0D0D10] rounded-2xl"
       >
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={cn(
             `${isBold ? "is-active" : ""}`,
-            "px-1 text-sm cursor-pointer"
+            "px-2 py-2 text-sm cursor-pointer hover:bg-neutral-800 rounded-[8px]"
           )}
           type="button"
         >
@@ -81,7 +81,7 @@ export const Editor = () => {
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={cn(
             `${isItalic ? "is-active" : ""}`,
-            "px-1 text-xs cursor-pointer"
+            "px-2 py-2 text-sm cursor-pointer hover:bg-neutral-800 rounded-[8px]"
           )}
           type="button"
         >
@@ -91,7 +91,7 @@ export const Editor = () => {
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           className={cn(
             `${isUnderline ? "is-active" : ""}`,
-            "px-1 text-sm cursor-pointer"
+            "px-2 py-2 text-sm cursor-pointer hover:bg-neutral-800 rounded-[8px]"
           )}
         >
           <UnderlineIcon size={18} />
@@ -100,7 +100,7 @@ export const Editor = () => {
           onClick={() => editor.chain().focus().toggleStrike().run()}
           className={cn(
             `${isStrikethrough ? "is-active" : ""}`,
-            "px-1 text-sm cursor-pointer"
+            "px-2 py-2 text-sm cursor-pointer hover:bg-neutral-800 rounded-[8px]"
           )}
           type="button"
         >
@@ -111,7 +111,7 @@ export const Editor = () => {
           onClick={() => editor.chain().focus().toggleHighlight().run()}
           className={cn(
             `${isHighlight ? "is-active" : ""}`,
-            "px-1 text-sm cursor-pointer"
+            "px-2 py-2 text-sm cursor-pointer hover:bg-neutral-800 rounded-[8px]"
           )}
         >
           <Highlighter size={18} />
@@ -121,18 +121,20 @@ export const Editor = () => {
       <FloatingMenu
         editor={editor}
         options={{ placement: "right-start", strategy: "absolute" }}
+        className=""
       >
         <div
-          className="px-2 pt-2 space-x-2 bg-neutral-800"
+          className="border py-2 px-2 bg-[#0D0D10] rounded-2xl flex items-center"
           data-testid="floating-menu"
         >
           <button
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
-            className={
-              editor.isActive("heading", { level: 1 }) ? "is-active" : ""
-            }
+            className={cn(
+              `${editor.isActive("heading", { level: 1 }) ? "is-active" : ""}`,
+              "px-2 py-2 text-sm cursor-pointer hover:bg-neutral-800 rounded-[8px]"
+            )}
           >
             <Heading1Icon size={18} />
           </button>
@@ -140,15 +142,19 @@ export const Editor = () => {
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
-            className={
-              editor.isActive("heading", { level: 2 }) ? "is-active" : ""
-            }
+            className={cn(
+              `${editor.isActive("heading", { level: 2 }) ? "is-active" : ""}`,
+              "px-2 py-2 text-sm cursor-pointer hover:bg-neutral-800 rounded-[8px]"
+            )}
           >
             <Heading2 size={18} />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={editor.isActive("bulletList") ? "is-active" : ""}
+            className={cn(
+              `${editor.isActive("bulletList") ? "is-active" : ""}`,
+              "px-2 py-2 text-sm cursor-pointer hover:bg-neutral-800 rounded-[8px]"
+            )}
           >
             <List size={18} />
           </button>
