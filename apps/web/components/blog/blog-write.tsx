@@ -18,9 +18,7 @@ export const BlogWriting = () => {
           placeholder="Title"
         />
       </div>
-
       <Editor />
-
     </div>
   );
 };
