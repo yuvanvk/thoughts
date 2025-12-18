@@ -40,6 +40,11 @@ export const Editor = () => {
     content: "<p>Share your thoughts</p>",
     immediatelyRender: false,
     autofocus: true,
+    editorProps: {
+      attributes: {
+        class: "outline-none h-64"
+      }
+    }
   });
 
   //@ts-ignore
