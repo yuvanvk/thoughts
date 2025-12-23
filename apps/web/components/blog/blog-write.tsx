@@ -1,10 +1,12 @@
 "use client";
 
+import { cn } from "@workspace/ui/lib/utils";
 import { Input } from "@workspace/ui/components/input";
 import { ImagePlus } from "lucide-react";
 import { Editor } from "./editor";
-import { cn } from "@workspace/ui/lib/utils";
 import { Button } from "@workspace/ui/components/button";
+import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { useEditor, EditorContext } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
@@ -13,7 +15,6 @@ import Italic from "@tiptap/extension-italic";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import Heading from "@tiptap/extension-heading";
-import { useMemo } from "react";
 
 export const BlogWriting = () => {
   const editor = useEditor({
@@ -36,6 +37,7 @@ export const BlogWriting = () => {
     },
   });
 
+  const router = useRouter();
   const providerValue = useMemo(() => ({ editor }), [editor]);
 
   if (!editor) {
@@ -47,7 +49,7 @@ export const BlogWriting = () => {
       <div className="flex flex-col px-3">
         <div className={cn("flex items-center justify-between pb-5")}>
           <Button
-            onClick={() => {}}
+            onClick={() => router.push("/home")}
             className={cn("rounded-[8px] cursor-pointer")}
             size={"sm"}
           >
