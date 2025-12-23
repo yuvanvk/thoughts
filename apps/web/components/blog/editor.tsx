@@ -1,18 +1,9 @@
 "use client";
-
-import Bold from "@tiptap/extension-bold";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
-import Italic from "@tiptap/extension-italic";
-import Underline from "@tiptap/extension-underline";
-import Highlight from "@tiptap/extension-highlight";
 import {
-  useEditor,
   EditorContent,
-  EditorContext,
+  useCurrentEditor,
   useEditorState,
 } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Heading from "@tiptap/extension-heading";
 import { BubbleMenu, FloatingMenu } from "@tiptap/react/menus";
 import { cn } from "@workspace/ui/lib/utils";
 import {
@@ -27,27 +18,13 @@ import {
 } from "lucide-react";
 
 export const Editor = () => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Bold,
-      Underline,
-      Italic,
-      HorizontalRule,
-      Highlight,
-      Heading,
-    ],
-    content: "<p>Share your thoughts</p>",
-    immediatelyRender: false,
-    autofocus: true,
-    editorProps: {
-      attributes: {
-        class: "outline-none h-64"
-      }
-    }
-  });
+  const { editor } = useCurrentEditor();
 
-  //@ts-ignore
+  if (!editor) {
+    return null;
+  }
+
+  // @ts-ignore
   const { isBold, isItalic, isStrikethrough, isHighlight, isUnderline } =
     useEditorState({
       editor,
@@ -60,12 +37,8 @@ export const Editor = () => {
       }),
     });
 
-  if (!editor) {
-    return null;
-  }
-
   return (
-    <EditorContext value={{ editor }}>
+    <>
       <EditorContent editor={editor} />
       <BubbleMenu
         editor={editor}
@@ -165,6 +138,6 @@ export const Editor = () => {
           </button>
         </div>
       </FloatingMenu>
-    </EditorContext>
+    </>
   );
 };

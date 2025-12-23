@@ -44,7 +44,7 @@ export const authRouter = router({
       try {
         const { email, password } = opts.input;
 
-        const user = await prisma.user.findFirst({
+        const user = await prisma.user.findUnique({
           where: {
             email,
           },
