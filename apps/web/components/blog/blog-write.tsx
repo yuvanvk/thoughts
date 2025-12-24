@@ -7,6 +7,7 @@ import { Editor } from "./editor";
 import { Button } from "@workspace/ui/components/button";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { FileUploader } from "@/components/file-upload/file-uploader";
 import { useEditor, EditorContext } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
@@ -40,6 +41,10 @@ export const BlogWriting = () => {
   const router = useRouter();
   const providerValue = useMemo(() => ({ editor }), [editor]);
 
+  const uploadBanner = (file: File) => {
+    
+  }
+
   if (!editor) {
     return null;
   }
@@ -68,31 +73,11 @@ export const BlogWriting = () => {
             Publish
           </Button>
         </div>
-        <div
-          className={cn(
-            "group h-64 bg-neutral-900 flex flex-col items-center justify-center space-y-2 w-full border-2 border-dashed cursor-pointer rounded-2xl",
-            "border-2 border-dashed hover:border-neutral-700",
-            "transition-all duration-200"
-          )}
-        >
-          <div
-            className={cn(
-              "flex items-center justify-center border border-neutral-800 rounded-[10px] p-4 duration-200",
-              "group-hover:shadow-neutral-600/70 shadow-xs"
-            )}
-          >
-            <ImagePlus
-              size={20}
-              className={cn(
-                "text-neutral-500 group-hover:text-neutral-300",
-                "duration-200 transition-all"
-              )}
-            />
-          </div>
-          <p className={cn("text-[12px] font-sans text-neutral-400")}>
-            Add a cover Image
-          </p>
-        </div>
+        <FileUploader
+          accept="image/jpeg"
+          maxMBSize={5}
+          onFileSelect={(file) => uploadBanner(file)}
+        />
 
         <div>
           <Input
