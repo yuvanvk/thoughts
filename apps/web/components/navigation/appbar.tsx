@@ -13,7 +13,7 @@ import {
 
 import { Command, CommandInput } from "@workspace/ui/components/command";
 import { useRouter } from "next/navigation";
-import { Logo } from "./logo";
+import { Logo } from "../branding/logo";
 import { useMobile } from "@/hooks/useMobile";
 import { MenuIcon } from "lucide-react";
 

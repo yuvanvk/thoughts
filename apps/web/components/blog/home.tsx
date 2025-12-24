@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { BlogCard } from "./blog-card";
-import { CategoryCard } from "@/components/ui/category-card";
-import { PersonalBrand } from "../ui/personal-brand";
+import { CategoryCard } from "@/components/cards/category-card";
+import { PersonalBrand } from "../branding/personal-brand";
 import { useMobile } from "@/hooks/useMobile";
 
 

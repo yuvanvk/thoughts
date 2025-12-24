@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/landing/navbar";
-import { Login } from "@/components/ui/login";
+import { Login } from "@/components/auth/login";
 
 export default function LoginPage() {
   return (
