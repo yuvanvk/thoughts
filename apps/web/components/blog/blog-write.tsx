@@ -16,6 +16,7 @@ import Italic from "@tiptap/extension-italic";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import Heading from "@tiptap/extension-heading";
+import { toast } from "sonner";
 
 export const BlogWriting = () => {
   const editor = useEditor({
@@ -41,9 +42,7 @@ export const BlogWriting = () => {
   const router = useRouter();
   const providerValue = useMemo(() => ({ editor }), [editor]);
 
-  const uploadBanner = (file: File) => {
-    
-  }
+  
 
   if (!editor) {
     return null;
@@ -76,7 +75,7 @@ export const BlogWriting = () => {
         <FileUploader
           accept="image/jpeg"
           maxMBSize={5}
-          onFileSelect={(file) => uploadBanner(file)}
+          
         />
 
         <div>

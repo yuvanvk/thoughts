@@ -6,13 +6,13 @@ import { Label } from "@workspace/ui/components/label";
 import { Input } from "@workspace/ui/components/input";
 
 import { ArrowRight, Asterisk } from "lucide-react";
-import { useTRPC } from "@/lib/trpc";
+import { useTRPC } from "@/lib/trpc/trpc";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/better-auth/auth-client";
 authClient;
 export const SignUp = () => {
   const trpc = useTRPC();

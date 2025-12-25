@@ -1,37 +1,46 @@
 "use client";
 
+import { cn } from "@workspace/ui/lib/utils";
+import { useTRPC } from "@/lib/trpc/trpc";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
-import { cn } from "@workspace/ui/lib/utils";
-import { ImagePlus, X } from "lucide-react";
+import { ImagePlus, Loader2Icon, Upload, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { uploadBannerImage } from "@/lib/supabase/upload-banner-images";
 
 interface FileUploaderProps {
   accept: string;
   maxMBSize: number;
-  onFileSelect: (file: File) => void;
 }
 
 export const FileUploader = ({
   accept = "image/*",
   maxMBSize = 5,
-  onFileSelect,
 }: FileUploaderProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isUploading, setUploading] = useState(false);
+  const [publicUrl, setPublicUrl] = useState<string | null>(null);
+
+  const trpc = useTRPC();
+
+  const uploadMutation = useMutation(
+    trpc.valid.create.mutationOptions()
+  );
 
   useEffect(() => {
-    if(!file) {
-        setPreviewUrl(null)
-        return
+    if (!file) {
+      setPreviewUrl(null);
+      return;
     }
 
-    const previewUrl = URL.createObjectURL(file)
-    setPreviewUrl(previewUrl)
-    return () => URL.revokeObjectURL(previewUrl)
-  }, [file])
+    const previewUrl = URL.createObjectURL(file);
+    setPreviewUrl(previewUrl);
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [file]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -45,7 +54,36 @@ export const FileUploader = ({
     }
 
     setFile(selectedFile);
-    onFileSelect(selectedFile);
+  };
+
+  const uploadBanner = async (file: File) => {
+    if (!file) {
+      return;
+    }
+    try {
+      setUploading(true);
+      
+      const data = await uploadMutation.mutateAsync({
+        size: file.size,
+        type: file.type,
+        name: file.name
+      });
+
+      if(data.status !== "200" && !data.preSignedUrl) {
+          toast.error(data.message)
+          return
+      }
+      
+
+      const publicUrl = await uploadBannerImage(file, data.preSignedUrl!)
+      setPublicUrl(publicUrl)
+      toast.success("Uploaded successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error(`${error}`);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -90,20 +128,41 @@ export const FileUploader = ({
               alt="preview"
               className="absolute inset-0 h-64 w-full object-cover object-center rounded-2xl"
             />
-            <Button
-              onClick={(e) => {
-                e.stopPropagation()
-                setFile(null)
+            <div className="flex items-center gap-x-2 absolute z-10 top-2 right-2">
+              <Button
+              disabled={isUploading}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  uploadBanner(file);
+                }}
+                className="!bg-blue-500 rounded-[10px] cursor-pointer"
+                variant={"ghost"}
+              >
+                {isUploading ? (
+                  <Loader2Icon className="animate-spin" />
+                ) : (
+                  <div className="flex items-center gap-x-2">
+                    Upload
+                    <Upload />
+                  </div>
+                )}
+              </Button>
 
-                if(inputRef.current) {
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFile(null);
+
+                  if (inputRef.current) {
                     inputRef.current.value = "";
-                }
-              }}  
-              className="absolute z-10 top-2 right-2 !bg-rose-500 rounded-[10px]"
-              variant={"destructive"}
-            >
-              <X />
-            </Button>
+                  }
+                }}
+                className="!bg-rose-500 rounded-[10px] cursor-pointer"
+                variant={"destructive"}
+              >
+                <X />
+              </Button>
+            </div>
           </>
         )}
       </div>

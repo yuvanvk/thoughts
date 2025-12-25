@@ -52,7 +52,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
           {children}
-          <Toaster position="bottom-right"/>
+          <Toaster position="top-center"/>
         </TRPCProvider>
       </QueryClientProvider>
     </NextThemesProvider>

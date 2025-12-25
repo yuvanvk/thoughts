@@ -4,13 +4,13 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { ArrowRight, Asterisk } from "lucide-react";
 import { useState } from "react";
-import { useTRPC } from "@/lib/trpc";
+import { useTRPC } from "@/lib/trpc/trpc";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/better-auth/auth-client";
 authClient
 export const Login = () => {
   const [loginDetails, setLoginDetails] = useState({
