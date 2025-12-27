@@ -13,19 +13,18 @@ import { uploadBannerImage } from "@/lib/supabase/upload-banner-images";
 interface FileUploaderProps {
   accept: string;
   maxMBSize: number;
-  onFileUpload: Dispatch<SetStateAction<string | null>>
+  onFileUpload: Dispatch<SetStateAction<string | null>>;
 }
 
 export const FileUploader = ({
   accept = "image/*",
   maxMBSize = 5,
-  onFileUpload
+  onFileUpload,
 }: FileUploaderProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setUploading] = useState(false);
-
 
   const trpc = useTRPC();
 
@@ -69,7 +68,7 @@ export const FileUploader = ({
         name: file.name,
       });
 
-      if (data.status !== "200" && !data.preSignedUrl) {
+      if (data.status !== 200 && !data.preSignedUrl) {
         toast.error(data.message);
         return;
       }

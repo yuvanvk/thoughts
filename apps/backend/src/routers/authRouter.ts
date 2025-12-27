@@ -1,5 +1,6 @@
 import { publicProcedure, router } from "../trpc";
 import prisma from "@workspace/db/prisma";
+import { TRPCError } from "@trpc/server";
 
 import * as z from "zod";
 
@@ -13,7 +14,6 @@ export const authRouter = router({
     .mutation(async (opts) => {
       try {
         const { email } = opts.input;
-
         const existingUser = await prisma.user.findUnique({
           where: {
             email,
@@ -21,16 +21,19 @@ export const authRouter = router({
         });
 
         if (existingUser) {
-          return { message: "User already exists", status: 411 };
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "User with email already exists."
+          })
         }
 
         return { message: "OK", status: 200 };
       } catch (error) {
-        console.log(error);
-        return {
-          message: "Something went wrong. Please try again later",
-          status: 500,
-        };
+
+        throw new TRPCError({
+          code: "BAD_GATEWAY",
+          message: "Something went wrong. Please try again later."
+        })
       }
     }),
   login: publicProcedure
@@ -51,16 +54,18 @@ export const authRouter = router({
         });
 
         if (!user) {
-          return { message: "User does not exist", status: 404 };
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "User with this email doesn't exist"
+          })
         }
 
         return { message: "OK", status: 200 };
       } catch (error) {
-        console.log(error);
-        return {
-          message: "Something went wrong. Please try again later",
-          status: 500,
-        };
+        throw new TRPCError({
+          code: "BAD_GATEWAY",
+          message: "Something went wrong. Please try again later."
+        })
       }
     }),
 });
