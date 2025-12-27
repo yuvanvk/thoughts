@@ -28,14 +28,15 @@ export const Appbar = () => {
           <Logo />
         </div>
 
-        <div className="flex items-center bg-neutral-950 px-2 border rounded-[10px] w-[400px]">
-          <Search size={20} className="text-neutral-600" />
+        <div className="flex items-center bg-neutral-950 border rounded-full w-[400px]">   
           <Input
             placeholder="Search"
-            className="border-none !bg-transparent focus:ring-0 outline-none focus-visible:ring-0 flex-1"
+            className="border-none !bg-transparent focus:ring-0 outline-none focus-visible:ring-0 flex-1 ml-1"
           />
+           <div className=" bg-neutral-800 rounded-r-full flex w-14 h-9 items-center justify-center">
+            <Search size={20} className="text-neutral-400"/>
+           </div>
         </div>
-
         {isMobile && (
           <div>
             <MenuIcon />
