@@ -50,8 +50,8 @@ export const Settings = () => {
                 email
               </Label>
               <Input
-                
-                placeholder="yuvanvk@gmail.com"
+                disabled
+                value={"abhivigneshofficial@gmail.com"}
                 className="font-sans uppercase !bg-black !px-4 !py-6"
               />
             </div>
