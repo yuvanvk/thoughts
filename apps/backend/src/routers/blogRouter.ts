@@ -9,7 +9,7 @@ export const blogRouter = router({
       z.object({
         title: z.string().min(5).max(100),
         description: z.string(),
-        image: z.string().or(z.null()),
+        image: z.string().nullable().optional(),
       })
     )
     .mutation(async (opts) => {
@@ -42,4 +42,41 @@ export const blogRouter = router({
         })
       }
     }),
+    get: publicProcedure
+      .input(z.object({
+        id: z.string()
+      }))
+      .query(async (opts) => {
+        try {
+          if(!opts.ctx.session?.session) {
+            throw new TRPCError({
+              code: "UNAUTHORIZED",
+              message: "Please login to proceed."
+            })
+          }
+  
+          const blog = await prisma.blog.findUnique({
+            where: {
+              id: opts.input.id
+            }
+          })
+
+          if(!blog) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "Blog does not exist."
+            })
+          }
+
+          return { message: "OK", status: 200, blog }
+        } catch (error) {
+          if(error instanceof TRPCError) {
+            throw error
+          }
+          throw new TRPCError({
+            code: "BAD_GATEWAY",
+            message: "Something went wrong"
+          })
+        }
+      })
 });
