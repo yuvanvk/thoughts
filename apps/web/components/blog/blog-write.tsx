@@ -8,6 +8,10 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FileUploader } from "@/components/file-upload/file-uploader";
 import { useEditor, EditorContext } from "@tiptap/react";
+import { useTRPC } from "@/lib/trpc/trpc";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
@@ -15,10 +19,6 @@ import Italic from "@tiptap/extension-italic";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import Heading from "@tiptap/extension-heading";
-import { useTRPC } from "@/lib/trpc/trpc";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
 
 export const BlogWriting = () => {
   const editor = useEditor({
@@ -78,7 +78,7 @@ export const BlogWriting = () => {
       toast.success(response.message);
       router.push("/home");
     } catch (error) {
-      console.log(error);
+      toast.error(`${error}`)
     }
   };
 

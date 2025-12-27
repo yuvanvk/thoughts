@@ -113,8 +113,6 @@ export const Login = () => {
                     rememberMe: true,
                     callbackURL: "http://localhost:3000/home",
                 });
-
-                toast.success("Logged In successfully")
               }
 
             }}

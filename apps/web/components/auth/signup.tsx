@@ -160,7 +160,6 @@ export const SignUp = () => {
                     callbackURL: "http://localhost:3000/home",
                   });
 
-                  toast.success("Account created successfully");
                 }
               }}
               type="submit"
