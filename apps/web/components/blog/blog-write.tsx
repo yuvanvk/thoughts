@@ -2,10 +2,9 @@
 
 import { cn } from "@workspace/ui/lib/utils";
 import { Input } from "@workspace/ui/components/input";
-import { ImagePlus } from "lucide-react";
 import { Editor } from "./editor";
 import { Button } from "@workspace/ui/components/button";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FileUploader } from "@/components/file-upload/file-uploader";
 import { useEditor, EditorContext } from "@tiptap/react";
@@ -16,7 +15,10 @@ import Italic from "@tiptap/extension-italic";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import Heading from "@tiptap/extension-heading";
+import { useTRPC } from "@/lib/trpc/trpc";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 export const BlogWriting = () => {
   const editor = useEditor({
@@ -41,12 +43,44 @@ export const BlogWriting = () => {
 
   const router = useRouter();
   const providerValue = useMemo(() => ({ editor }), [editor]);
+  const [publicUrl, setPublicUrl] = useState<string | null>(null);
+  const [title, setTitle] = useState<string | null>(null);
 
-  
+  const trpc = useTRPC();
+  const publishMutation = useMutation(trpc.blog.create.mutationOptions());
 
   if (!editor) {
     return null;
   }
+
+  const handlePublish = async () => {
+    try {
+      if (!title?.trim()) {
+        toast.error("Please provide title");
+        return;
+      }
+
+      if (editor?.isEmpty) {
+        toast.error("The content is empty. Please provide some content");
+        return;
+      }
+
+      const response = await publishMutation.mutateAsync({
+        title,
+        description: editor.getHTML(),
+        image: publicUrl,
+      });
+
+      if (response.status !== 200) {
+        toast.error(response.message);
+      }
+
+      toast.success(response.message);
+      router.push("/home");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <EditorContext.Provider value={providerValue}>
@@ -60,26 +94,29 @@ export const BlogWriting = () => {
             Cancel
           </Button>
           <Button
-            onClick={() => {
-              console.log(JSON.stringify(editor.getJSON(), null, 2));
-            }}
+            onClick={handlePublish}
             className={cn(
               "rounded-[8px] bg-lime-700 text-white cursor-pointer",
               "hover:bg-lime-800"
             )}
             size={"sm"}
           >
-            Publish
+            {publishMutation.isPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Publish"
+            )}
           </Button>
         </div>
         <FileUploader
           accept="image/jpeg"
           maxMBSize={5}
-          
+          onFileUpload={setPublicUrl}
         />
 
         <div>
           <Input
+            onChange={(e) => setTitle(e.target.value)}
             className={cn(
               "w-full !border-none !bg-black my-4 !text-4xl py-10 px-0 focus-visible:ring-0"
             )}

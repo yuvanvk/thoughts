@@ -6,30 +6,30 @@ import { useMutation } from "@tanstack/react-query";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { ImagePlus, Loader2Icon, Upload, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { uploadBannerImage } from "@/lib/supabase/upload-banner-images";
 
 interface FileUploaderProps {
   accept: string;
   maxMBSize: number;
+  onFileUpload: Dispatch<SetStateAction<string | null>>
 }
 
 export const FileUploader = ({
   accept = "image/*",
   maxMBSize = 5,
+  onFileUpload
 }: FileUploaderProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setUploading] = useState(false);
-  const [publicUrl, setPublicUrl] = useState<string | null>(null);
+
 
   const trpc = useTRPC();
 
-  const uploadMutation = useMutation(
-    trpc.valid.create.mutationOptions()
-  );
+  const uploadMutation = useMutation(trpc.valid.create.mutationOptions());
 
   useEffect(() => {
     if (!file) {
@@ -62,21 +62,20 @@ export const FileUploader = ({
     }
     try {
       setUploading(true);
-      
+
       const data = await uploadMutation.mutateAsync({
         size: file.size,
         type: file.type,
-        name: file.name
+        name: file.name,
       });
 
-      if(data.status !== "200" && !data.preSignedUrl) {
-          toast.error(data.message)
-          return
+      if (data.status !== "200" && !data.preSignedUrl) {
+        toast.error(data.message);
+        return;
       }
-      
 
-      const publicUrl = await uploadBannerImage(file, data.preSignedUrl!)
-      setPublicUrl(publicUrl)
+      const publicUrl = await uploadBannerImage(file, data.preSignedUrl!);
+      onFileUpload(publicUrl);
       toast.success("Uploaded successfully");
     } catch (error) {
       console.log(error);
@@ -130,7 +129,7 @@ export const FileUploader = ({
             />
             <div className="flex items-center gap-x-2 absolute z-10 top-2 right-2">
               <Button
-              disabled={isUploading}
+                disabled={isUploading}
                 onClick={(e) => {
                   e.stopPropagation();
                   uploadBanner(file);
