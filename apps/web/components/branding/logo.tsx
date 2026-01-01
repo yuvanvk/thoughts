@@ -3,7 +3,7 @@ export const Logo = () => (
     fill="none"
     height="48"
     viewBox="0 0 40 48"
-    width="30"
+    width="25"
     xmlns="http://www.w3.org/2000/svg"
   >
     <clipPath id="a">
