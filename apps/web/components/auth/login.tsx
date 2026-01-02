@@ -10,8 +10,10 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+import { Card, CardContent } from "@workspace/ui/components/card";
+
 import { authClient } from "@/lib/better-auth/auth-client";
-authClient
+authClient;
 export const Login = () => {
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -34,96 +36,89 @@ export const Login = () => {
   );
 
   return (
-    <div className="max-w-4xl mx-auto border-x h-screen">
-      <div className="px-20 py-36 flex flex-col space-y-4">
-        <h1 className="font-medium text-5xl max-w-2xl tracking-tighter">
-          Welcome back to Thoughts
+    <div className="py-40">
+      <div className="flex flex-col">
+        <h1 className="font-medium text-4xl text-center font-serif text-neutral-500">
+          Welcome back!
         </h1>
-        <p className="text-[#A0A0A0] font-mono text-sm">
-          Don't have an account?{" "}
-          <Link className="underline " href={"/signup"}>
-            Sign up
-          </Link>
-        </p>
+        <h2 className="text-4xl font-medium text-center font-serif">
+          Login to your account.
+        </h2>
 
-        <div className="my-5 flex flex-col space-y-6">
-          <div className="flex items-center gap-x-4">
-            <div className="bg-[#333333] px-1.5 py-1">
-              <Asterisk size={20} />
-            </div>
-            <div className="text-3xl font-medium tracking-tight">
-              Enter your credentails to proceed
-            </div>
-          </div>
+        <Card className="bg-neutral-900 rounded-[10px] max-w-sm mx-auto w-full mt-5 dark:border-neutral-700">
+          <CardContent>
+            <div className="my-5 flex flex-col space-y-6">
+              <div className="space-y-3">
+                <Label
+                  htmlFor="email"
+                  className="capitalize font-medium font-sans text-white"
+                >
+                  email
+                </Label>
+                <Input
+                  onChange={(e) => {
+                    setLoginDetails({
+                      ...loginDetails,
+                      email: e.target.value,
+                    });
+                  }}
+                  placeholder="yuvanvk@gmail.com"
+                  className="font-sans rounded-[10px] bg-neutral-800! border-neutral-700"
+                />
+              </div>
 
-          <div className="space-y-3">
-            <Label
-              htmlFor="email"
-              className="uppercase font-light font-mono text-[#A0A0A0]"
-            >
-              email
-            </Label>
-            <Input
-              onChange={(e) => {
-                setLoginDetails({
-                  ...loginDetails,
-                  email: e.target.value,
-                });
-              }}
-              placeholder="yuvanvk@gmail.com"
-              className="font-sans uppercase !bg-black !px-4 !py-6 "
-            />
-          </div>
+              <div className="space-y-3">
+                <Label
+                  htmlFor="password"
+                  className="capitalize font-medium font-sans text-white"
+                >
+                  password
+                </Label>
+                <Input
+                  onChange={(e) => {
+                    setLoginDetails({
+                      ...loginDetails,
+                      password: e.target.value,
+                    });
+                  }}
+                  type="password"
+                  placeholder=""
+                  className="font-sans rounded-[10px] bg-neutral-800! border-neutral-700"
+                />
+              </div>
 
-          <div className="space-y-3">
-            <Label
-              htmlFor="email"
-              className="uppercase font-light font-mono text-[#A0A0A0]"
-            >
-              password
-            </Label>
-            <Input
-              onChange={(e) => {
-                setLoginDetails({
-                  ...loginDetails,
-                  password: e.target.value,
-                });
-              }}
-              type="password"
-              placeholder=""
-              className="font-sans uppercase !bg-black !px-4 !py-6 "
-            />
-          </div>
-
-          <button
-            onClick={async () => {
-              const reponse = await login.mutateAsync({
-                email: loginDetails.email,
-                password: loginDetails.password,
-              });
-
-              if (reponse.status !== 200) {
-                toast.error(reponse.message)
-              }
-
-              if (reponse.status === 200) {
-                await authClient.signIn.email({
+              <button
+                onClick={async () => {
+                  const reponse = await login.mutateAsync({
                     email: loginDetails.email,
                     password: loginDetails.password,
-                    rememberMe: true,
-                    callbackURL: "http://localhost:3000/home",
-                });
-              }
+                  });
 
-            }}
-            className="px-6 py-4 flex justify-between items-center gap-x-3 bg-[#121212]  mt-4 cursor-pointer w-full border"
-          >
-            <div className="font-mono font-medium">Log In</div>
-            <div className="bg-white px-3 py-2">
-              <ArrowRight className="text-black" size={20} />
+                  if (reponse.status !== 200) {
+                    toast.error(reponse.message);
+                  }
+
+                  if (reponse.status === 200) {
+                    await authClient.signIn.email({
+                      email: loginDetails.email,
+                      password: loginDetails.password,
+                      rememberMe: true,
+                      callbackURL: "http://localhost:3000/home",
+                    });
+                  }
+                }}
+                className="px-2 py-2 flex justify-center items-center gap-x-2 bg-[#121212] dark:bg-white dark:text-black  mt-4 cursor-pointer w-full border rounded-[18px]"
+              >
+                <div className="font-sans font-medium">Login</div>
+                <div>
+                  <ArrowRight size={20} />
+                </div>
+              </button>
             </div>
-          </button>
-        </div>
+          </CardContent>
+        </Card>
+
+        <p className="text-neutral-400 text-sm text-center font-medium font-sans mt-10">Don't have an account? <span onClick={() => router.push("/signup")} className="hover:underline hover:text-white cursor-pointer">Create one!</span></p>
       </div>
     </div>
   );
