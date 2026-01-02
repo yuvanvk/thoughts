@@ -13,8 +13,8 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-x-2">
-            <button onClick={() => router.push("/login")} className="rounded-[10px] px-4 py-1.5 font-semibold text-[13px] shadow dark:bg-neutral-700 dark:border-neutral-600 border">Log in</button>
-            <button onClick={() => router.push("/signup")} className="bg-purple-500 text-white rounded-[10px] text-[13px] px-4 py-1.5 shadow font-medium">Create Profile</button>
+            <button onClick={() => router.push("/login")} className="rounded-[10px] px-4 py-1.5 font-semibold text-[13px] shadow dark:bg-neutral-700 dark:border-neutral-600 border cursor-pointer">Log in</button>
+            <button onClick={() => router.push("/signup")} className="bg-purple-500 text-white rounded-[10px] text-[13px] px-4 py-1.5 shadow font-medium cursor-pointer">Create Profile</button>
         </div>
     </div>
 }

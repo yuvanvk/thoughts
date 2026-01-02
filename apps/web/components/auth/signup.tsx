@@ -1,11 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { Navbar } from "@/components/landing/navbar";
 import { Label } from "@workspace/ui/components/label";
 import { Input } from "@workspace/ui/components/input";
 
-import { ArrowRight, Asterisk } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -13,7 +11,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 import { authClient } from "@/lib/better-auth/auth-client";
-authClient;
+import { Card, CardContent } from "@workspace/ui/components/card";
+
 export const SignUp = () => {
   const trpc = useTRPC();
 
@@ -39,35 +38,19 @@ export const SignUp = () => {
   );
 
   return (
-    <>
-      <Navbar />
-      <div className="max-w-4xl mx-auto border-x h-screen">
-        <div className="px-20 py-36 flex flex-col space-y-4">
-          <h1 className="font-medium text-5xl max-w-2xl tracking-tighter">
-            Be part of Thoughts. Share what matters to you.
+    <div className="w-full py-30">
+      <div className="w-full">
+        <div className="flex flex-col w-full space-y-6">
+          <h1 className="font-medium text-[40px] font-serif text-center">
+            Sign up & create your profile.
           </h1>
-          <p className="text-[#A0A0A0] font-mono text-sm">
-            Already signed up?{" "}
-            <Link className="underline " href={"/login"}>
-              Log in
-            </Link>
-          </p>
 
-          <div className="my-5 flex flex-col space-y-6">
-            <div className="flex items-center gap-x-4">
-              <div className="bg-[#333333] px-1.5 py-1">
-                <Asterisk size={20} />
-              </div>
-              <div className="text-3xl font-medium tracking-tight">
-                Enter your details to proceed
-              </div>
-            </div>
-
-            <div className="flex items-center gap-x-4 w-full">
+          <Card className="rounded-[10px] bg-neutral-900 max-w-sm mx-auto w-full">
+            <CardContent className="space-y-4">
               <div className="space-y-3 w-full">
                 <Label
                   htmlFor="firstname"
-                  className="uppercase font-light font-mono text-[#A0A0A0]"
+                  className="capitalize font-medium font-sans text-white"
                 >
                   first name
                 </Label>
@@ -79,14 +62,13 @@ export const SignUp = () => {
                     })
                   }
                   placeholder="Yuvan"
-                  className="font-sans uppercase !bg-black !px-4 !py-6 min-w-1/2"
+                  className="font-sans bg-neutral-800 border-neutral-700 rounded-[10px]"
                 />
               </div>
-
               <div className="space-y-3 w-full">
                 <Label
                   htmlFor="lastname"
-                  className="uppercase font-light font-mono text-[#A0A0A0]"
+                  className="capitalize font-medium font-sans text-white"
                 >
                   last name
                 </Label>
@@ -98,81 +80,77 @@ export const SignUp = () => {
                     })
                   }
                   placeholder="kappala"
-                  className="font-sans uppercase !bg-black !px-4 !py-6 min-w-1/2"
+                  className="font-sans bg-neutral-800 border-neutral-700 rounded-[10px]"
                 />
               </div>
-            </div>
+              <div className="space-y-3">
+                <Label
+                  htmlFor="email"
+                  className="capitalize font-medium font-sans text-white"
+                >
+                  email
+                </Label>
+                <Input
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      email: e.target.value,
+                    })
+                  }
+                  placeholder="yuvanvk@gmail.com"
+                  className="font-sans bg-neutral-800 border-neutral-700 rounded-[10px] "
+                />
+              </div>
 
-            <div className="space-y-3">
-              <Label
-                htmlFor="email"
-                className="uppercase font-light font-mono text-[#A0A0A0]"
-              >
-                email
-              </Label>
-              <Input
-                onChange={(e) =>
-                  setUserDetails({
-                    ...userDetails,
-                    email: e.target.value,
-                  })
-                }
-                placeholder="yuvanvk@gmail.com"
-                className="font-sans uppercase !bg-black !px-4 !py-6 "
-              />
-            </div>
+              <div className="space-y-3">
+                <Label
+                  htmlFor="email"
+                  className="capitalize font-medium font-sans text-white"
+                >
+                  password
+                </Label>
+                <Input
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      password: e.target.value,
+                    })
+                  }
+                  type="password"
+                  placeholder=""
+                  className="font-sans bg-neutral-800 border-neutral-700 rounded-[10px]"
+                />
+              </div>
 
-            <div className="space-y-3">
-              <Label
-                htmlFor="email"
-                className="uppercase font-light font-mono text-[#A0A0A0]"
-              >
-                password
-              </Label>
-              <Input
-                onChange={(e) =>
-                  setUserDetails({
-                    ...userDetails,
-                    password: e.target.value,
-                  })
-                }
-                type="password"
-                placeholder=""
-                className="font-sans uppercase !bg-black !px-4 !py-6 "
-              />
-            </div>
-
-            <button
-              onClick={async () => {
-                const response = await createUser.mutateAsync({
-                  email: userDetails.email,
-                });
-
-                if (response.status !== 200) {
-                  toast.error(response.message);
-                }
-
-                if (response.status === 200) {
-                  await authClient.signUp.email({
-                    name: `${userDetails.firstName} ${userDetails.lastName}`,
+              <button
+                onClick={async () => {
+                  const response = await createUser.mutateAsync({
                     email: userDetails.email,
-                    password: userDetails.password,
-                    callbackURL: "http://localhost:3000/home",
                   });
 
-                }
-              }}
-              type="submit"
-              className="px-6 py-4 flex items-center justify-between bg-[#333333] hover:bg-neutral-800 transition mt-4 cursor-pointer"
-            >
-              <div className="font-mono font-medium">Signup</div>
-              <div className="bg-white px-3 py-2">
-                <ArrowRight className="text-black" size={20} />
-              </div>
-            </button>
-          </div>
+                  if (response.status !== 200) {
+                    toast.error(response.message);
+                  }
+
+                  if (response.status === 200) {
+                    await authClient.signUp.email({
+                      name: `${userDetails.firstName} ${userDetails.lastName}`,
+                      email: userDetails.email,
+                      password: userDetails.password,
+                      callbackURL: "http://localhost:3000/home",
+                    });
+                  }
+                }}
+                type="submit"
+                className="px-3 py-2 flex items-center justify-center gap-x-2 bg-[#333333] dark:bg-white dark:text-black hover:bg-neutral-800 transition mt-5 cursor-pointer w-full rounded-[15px]"
+              >
+                <div className="font-sans font-medium">Create Profile</div>
+                <ArrowRight size={20} />
+              </button>
+            </CardContent>
+          </Card>
         </div>
       </div>
-    </>
+    </div>
   );
 };
