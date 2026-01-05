@@ -12,30 +12,22 @@ import {
 } from "@workspace/ui/components/tooltip";
 
 import { useRouter } from "next/navigation";
-import { Logo } from "@/components/branding/logo";
 import { useMobile } from "@/hooks/useMobile";
-import { MenuIcon, Search } from "lucide-react";
-import { Input } from "@workspace/ui/components/input";
-import { Searchbar } from "./search-bar";
+import { MenuIcon } from "lucide-react";
 
 export const Appbar = () => {
   const router = useRouter();
   const isMobile = useMobile();
 
   return (
-    <div className="fixed w-full z-50 backdrop-blur-3xl">
-      <div className="w-full xl:max-w-6xl mx-auto flex items-center justify-between px-3 xl:px-4 py-2">
-        <div onClick={() => router.push("/home")} className="cursor-pointer">
-          <Logo />
-        </div>
-
-       <Searchbar />
+    <div className="w-full h-fit z-50 backdrop-blur-3xl border-b">
+      <div className="w-full  mx-auto flex items-center justify-between px-3 xl:px-4 py-2">
+        <p className="text-[15px] font-medium font-sans">Blogs</p>
         {isMobile && (
           <div>
             <MenuIcon />
           </div>
         )}
-
         {!isMobile && (
           <div className="flex  items-center gap-x-2">
             <div

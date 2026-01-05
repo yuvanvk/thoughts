@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google"
 import { Instrument_Serif } from "next/font/google"
-import "@workspace/ui/globals.css"
 import { Providers } from "@/components/wrapper/providers"
+import "@workspace/ui/globals.css"
 
 
 const fontSans = Geist({
@@ -31,8 +31,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${fontSans.variable} ${fontMono.variable} ${fontInstrumentSerif.variable}  antialiased dark:bg-[#171717]`}
-      >
-        <Providers>{children}</Providers>
+      >     
+          <Providers>{children}</Providers>
       </body>
     </html>
   )

@@ -1,5 +1,7 @@
-export const Container = ({ children }: { children: React.ReactNode }) => {
-    return <div className="max-w-xl mx-auto px-2 py-2 space-y-8">
+import { cn } from "@workspace/ui/lib/utils"
+
+export const Container = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return <div className={cn("max-w-xl mx-auto space-y-8 w-full", className)}>
         {children}
     </div>
 }

@@ -6,9 +6,9 @@ import { Container } from "@/components/wrapper/container";
 export default function Page() {
   return (
    <Container>
-    <Navbar />
-    <Hero /> 
-    <AvatarSection />
+      <Navbar />
+      <Hero /> 
+      <AvatarSection />
    </Container>
   )
 }
