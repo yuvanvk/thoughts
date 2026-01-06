@@ -11,5 +11,7 @@ export default async function HomePage() {
   if (!data?.session) {
     redirect("/login");
   }
-  return "";
+  return <div>
+    <Home />
+  </div>;
 }
