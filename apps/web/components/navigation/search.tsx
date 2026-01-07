@@ -4,15 +4,19 @@ import {
   AvatarImage,
 } from "@workspace/ui/components/avatar";
 import { Searchbar } from "./search-bar";
+import { Categories } from "./categories";
 
 export const Search = () => {
   return (
-    <div className="px-3 py-[8.2px] border-b flex items-center w-full gap-x-3">
-      <Searchbar />
-      <Avatar>
-        <AvatarImage src={"https://github.com/shadcn.png"} />
-        <AvatarFallback>AV</AvatarFallback>
-      </Avatar>
+    <div>
+      <div className="px-3 py-[8.2px] border-b flex items-center w-full gap-x-3">
+        <Searchbar />
+        <Avatar>
+          <AvatarImage src={"https://github.com/shadcn.png"} />
+          <AvatarFallback>AV</AvatarFallback>
+        </Avatar>
+      </div>
+      <Categories />
     </div>
   );
 };
