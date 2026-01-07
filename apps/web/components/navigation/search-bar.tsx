@@ -9,7 +9,7 @@ export const Searchbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div>
+    <div className="flex-1">
       <div className="flex items-center gap-x-1 bg-neutral-800 border rounded-[8px] px-2 border-neutral-700">
         <Search size={13} className="text-neutral-400" />
         <Input
