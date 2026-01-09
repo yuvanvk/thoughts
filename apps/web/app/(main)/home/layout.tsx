@@ -1,4 +1,5 @@
 import { Appbar } from "@/components/navigation/app-bar";
+import { Categories } from "@/components/navigation/categories";
 import { Search } from "@/components/navigation/search";
 import { Sidebar } from "@/components/navigation/sidebar";
 import { Container } from "@/components/wrapper/container";
@@ -15,8 +16,9 @@ export default function HomeLayout({
         <Appbar />
         {children}
       </Container>
-      <Container className="flex-1 p-0 border-r ">
+      <Container className="hidden md:block md:flex-1 p-0 border-r ">
         <Search />
+        <Categories />
       </Container>
     </Container>
   );
