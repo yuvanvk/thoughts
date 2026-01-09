@@ -2,11 +2,13 @@
 
 import { BlogCard } from "./blog-card";
 import { PersonalBrand } from "../branding/personal-brand";
-
 import { ScrollArea } from "@workspace/ui/components/scroll-area";
+import { useTRPC } from "@/lib/trpc/trpc";
 
 export const Home = () => {
+  const trpc = useTRPC();
 
+  
   return (
     <ScrollArea className="w-full pb-5 px-4 h-[90vh]">
       <div>

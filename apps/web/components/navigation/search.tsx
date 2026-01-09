@@ -4,7 +4,6 @@ import {
   AvatarImage,
 } from "@workspace/ui/components/avatar";
 import { Searchbar } from "./search-bar";
-import { Categories } from "./categories";
 
 export const Search = () => {
   return (
@@ -16,7 +15,6 @@ export const Search = () => {
           <AvatarFallback>AV</AvatarFallback>
         </Avatar>
       </div>
-      <Categories />
     </div>
   );
 };
