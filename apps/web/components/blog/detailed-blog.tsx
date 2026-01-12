@@ -1,14 +1,20 @@
 "use client";
 
+import Image from "next/image";
+import parse from "html-react-parser";
+
 import { useTRPC } from "@/lib/trpc/trpc";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@workspace/ui/components/button";
-import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@workspace/ui/components/skeleton";
-import parse from "html-react-parser";
-import Image from "next/image";
 import { toast } from "sonner";
+import { ScrollArea } from "@workspace/ui/components/scroll-area";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@workspace/ui/components/avatar";
+import { cn } from "@workspace/ui/lib/utils";
 
 export const DetailedBlog = () => {
   const router = useRouter();
@@ -17,9 +23,7 @@ export const DetailedBlog = () => {
 
   const trpc = useTRPC();
 
-  const { data, isLoading, error } = useQuery(
-    trpc.blog.get.queryOptions({ id } as { id: string })
-  );
+  const { data, isLoading, error } = useQuery(trpc.blog.get.queryOptions({ id } as { id: string }));
 
   if (error) {
     toast.error(error.message);
@@ -39,7 +43,7 @@ export const DetailedBlog = () => {
 
   function formatDate(date: string) {
     if (!date) return "";
-    const dateObj =  new Date(date);
+    const dateObj = new Date(date);
     return new Intl.DateTimeFormat("en-US", {
       month: "short",
       day: "numeric",
@@ -48,63 +52,74 @@ export const DetailedBlog = () => {
   }
 
   return (
-    <div className="flex flex-col max-w-6xl mx-auto py-28 space-y-6 w-full">
-      <div className="w-fit">
-        <Button
-          variant={"secondary"}
-          className="cursor-pointer w-auto"
-          onClick={() => router.back()}
-        >
-          <ArrowLeft />
-          Back
-        </Button>
-      </div>
-      <div className="w-full h-96 relative">
-        {isLoading ? (
-          <Skeleton className="absolute inset-0" />
-        ) : (
-          <Image
-            src={data?.blog?.imageUrl || ""}
-            alt={data?.blog?.id || "untitled"}
-            className="object-cover"
-            fill
-          />
-        )}
-      </div>
-      <div className="flex items-start justify-between mt-3">
-        <div className="flex flex-col max-w-3/4">
-          <div className="text-5xl tracking-tight font-medium">
-            {isLoading ? (
-              <Skeleton className="w-full md:w-28 lg:w-xl xl:w-4xl h-12" />
-            ) : (
-              `${data?.blog?.title}`
-            )}
-          </div>
-          <div className="flex items-center gap-x-2 my-3 px-0.5">
-            <div className="text-sm font-mono  text-neutral-400">
+    <ScrollArea className={cn("h-[90vh] px-4")}>
+      <div className={cn("flex flex-col max-w-xl mx-auto space-y-6 w-full")}>
+        <div className={cn("w-full h-72 relative")}>
+          {isLoading ? (
+            <Skeleton className={cn("absolute inset-0")} />
+          ) : (
+            <Image
+              src={data?.blog?.imageUrl || ""}
+              alt={data?.blog?.id || "untitled"}
+              className={cn("object-cover rounded-2xl")}
+              fill
+            />
+          )}
+        </div>
+        <div className={cn("flex items-start justify-between mt-3")}>
+          <div className={cn("flex flex-col max-w-3/4")}>
+            <div className={cn("text-[42px] tracking-tight font-medium")}>
               {isLoading ? (
-                <Skeleton className="w-64 h-5" />
+                <Skeleton className={cn("w-full")} />
               ) : (
-                formatDate(data?.blog?.createdAt!)
+                `${data?.blog?.title}`
               )}
             </div>
-            <span className="font-mono text-sm text-neutral-400">
-              {isLoading ? (
-                <Skeleton className="w-20 h-5" />
-              ) : (
-                `· ${estimatedTime(data?.blog.description!)} min read`
+            <div className={cn("flex items-center gap-x-2 ml-2")}>
+              <Avatar className={cn("w-6 h-6")}>
+                <AvatarImage src="https://github.com/shadcn.png" alt="avatar" />
+                <AvatarFallback>AV</AvatarFallback>
+              </Avatar>
+              <div className={cn("flex flex-col")}>
+                <div className={cn("uppercase text-xs")}>Abhi Vignesh</div>
+                <div className={cn("flex items-center")}>
+                  <div
+                    className={cn("text-[10px] font-sans  text-neutral-400")}
+                  >
+                    {isLoading ? (
+                      <Skeleton className={cn("w-64 h-5")} />
+                    ) : (
+                      formatDate(data?.blog?.createdAt!)
+                    )}
+                  </div>
+                  <span
+                    className={cn(
+                      "font-sans text-[10px] text-neutral-400 ml-0.5"
+                    )}
+                  >
+                    {isLoading ? (
+                      <Skeleton className={cn("w-20 h-5")} />
+                    ) : (
+                      `· ${estimatedTime(data?.blog.description!)} min read`
+                    )}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              className={cn(
+                "text-[14px] tracking-normal font-[400] font-sans my-10"
               )}
-            </span>
-          </div>
-          <div className="text-xl tracking-tight font-medium font-mono my-10">
-            {isLoading ? (
-              <Skeleton className="w-full xl:w-6xl h-32 flex-1" />
-            ) : (
-              parse(`${data?.blog.description}`)
-            )}
+            >
+              {isLoading ? (
+                <Skeleton className={cn("w-full xl:w-6xl h-32 flex-1")} />
+              ) : (
+                parse(`${data?.blog.description}`)
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ScrollArea>
   );
 };

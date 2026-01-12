@@ -10,13 +10,13 @@ export const Searchbar = () => {
 
   return (
     <div className="flex-1">
-      <div className="flex items-center gap-x-1 bg-neutral-800 border rounded-[8px] px-2 border-neutral-700">
+      <div className="flex items-center gap-x-1  border rounded-[8px] px-2 border-neutral-200 dark:border-neutral-700">
         <Search size={13} className="text-neutral-400" />
         <Input
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setOpen(true)}
           placeholder="Search"
-          className="border-none !bg-transparent focus:ring-0 outline-none focus-visible:ring-0 flex-1 text-sm! h-7 px-0 py-0"
+          className="border-none  focus:ring-0 outline-none focus-visible:ring-0 flex-1 text-sm! h-7 px-0 py-0"
         />
       </div>
     </div>
