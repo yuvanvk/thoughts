@@ -20,7 +20,7 @@ export const Categories = () => {
           <div className={cn(`${category === c.route ? "text-white" : "text-neutral-400"} font-sans`)}>{c.name}</div>
           <div
             className={cn(
-              "px-2.5 py-1 bg-neutral-800 rounded-[8px] font-mono text-[10px]"
+              "px-2.5 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-[8px] font-mono text-[10px]"
             )}
           >
             {c.count}

@@ -1,6 +1,7 @@
-import prisma from "@workspace/db/prisma";
-import { publicProcedure, router } from "../trpc";
 import * as z from "zod";
+import prisma from "@workspace/db/prisma";
+
+import { publicProcedure, router } from "../trpc";
 import { TRPCError } from "@trpc/server";
 
 export const blogRouter = router({
@@ -78,5 +79,6 @@ export const blogRouter = router({
             message: "Something went wrong"
           })
         }
-      })
+      }),
+      
 });

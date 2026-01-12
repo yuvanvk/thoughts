@@ -10,7 +10,7 @@ export default function DetailedBlogLayout({
   return (
     <Container className="max-w-6xl flex">
       <Sidebar />
-      <Container className="max-w-full mx-0 border-x ">
+      <Container className="max-w-full mx-0 border-x">
         <Appbar />
         {children}
       </Container>
