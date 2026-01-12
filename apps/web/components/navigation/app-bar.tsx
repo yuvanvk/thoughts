@@ -13,7 +13,7 @@ import {
 
 import { useRouter } from "next/navigation";
 import { useMobile } from "@/hooks/useMobile";
-import { MenuIcon } from "lucide-react";
+
 
 export const Appbar = () => {
   const router = useRouter();

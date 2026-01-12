@@ -18,7 +18,7 @@ export const BlogCard = ({ variant }: BlogCardProps) => {
 
 
   return (
-    <div className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border bg-[#121212] rounded-[10px] shadow`}>
+    <div className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}>
       <div className={`${isColumn ? "w-full aspect-video" : "w-40 h-40 aspect-square"} relative `}>
         <Image
           src={"https://dqy38fnwh4fqs.cloudfront.net/blog/featured-bf77b9a5-c7c3-49fa-a9a0-e48937b046b1"}

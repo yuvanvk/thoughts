@@ -16,7 +16,7 @@ export default function HomeLayout({
         <Appbar />
         {children}
       </Container>
-      <Container className="hidden md:block md:flex-1 p-0 border-r ">
+      <Container className="hidden md:block md:flex-1 p-0 border-r space-y-2">
         <Search />
         <Categories />
       </Container>

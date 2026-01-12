@@ -2,7 +2,7 @@
 
 import { Input } from "@workspace/ui/components/input";
 import { Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 export const Searchbar = () => {
   const [query, setQuery] = useState("");
