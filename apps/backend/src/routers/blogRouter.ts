@@ -80,5 +80,32 @@ export const blogRouter = router({
           })
         }
       }),
-      
+      getUserBlogs: publicProcedure
+      .query(async (opts) => {
+        try {
+          if(!opts.ctx.session?.session) {
+            throw new TRPCError({
+              code: "UNAUTHORIZED",
+              message: "Please login to proceed"
+            })
+          }
+
+          const blogs = await prisma.blog.findMany({
+            where: {
+              userId: opts.ctx.session.user.id
+            }
+          })
+
+          return { message: "OK", status: 200, blogs }
+        } catch (error) {
+            if(error instanceof TRPCError) {
+              throw error
+            }
+
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: "Something went wrong"
+            })
+        }
+      })
 });
