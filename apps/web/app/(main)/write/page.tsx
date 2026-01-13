@@ -14,7 +14,5 @@ export default async function WritePage() {
         redirect("/login")
     }
 
-    return <div className="pt-28 max-w-6xl mx-auto">
-        <BlogWriting />
-    </div>
+    return <BlogWriting />
 }

@@ -78,13 +78,31 @@ export const BlogWriting = () => {
       toast.success(response.message);
       router.push("/home");
     } catch (error) {
-      toast.error(`${error}`)
+      toast.error(`${error}`);
     }
   };
 
   return (
     <EditorContext.Provider value={providerValue}>
-      <div className="flex flex-col px-3">
+      <div className="flex flex-col px-4 max-w-3xl mx-auto mt-5 xl:mt-16 h-[88vh]">
+        
+        <FileUploader
+          accept="image/jpeg"
+          maxMBSize={5}
+          onFileUpload={setPublicUrl}
+        />
+
+        <div>
+          <Input
+            onChange={(e) => setTitle(e.target.value)}
+            className={cn(
+              "w-full !border-none !bg-neutral-900 my-4 !text-4xl py-10 px-0 focus-visible:ring-0"
+            )}
+            type="text"
+            placeholder="Your story title"
+          />
+        </div>
+        <Editor />
         <div className={cn("flex items-center justify-between pb-5")}>
           <Button
             onClick={() => router.push("/home")}
@@ -108,23 +126,6 @@ export const BlogWriting = () => {
             )}
           </Button>
         </div>
-        <FileUploader
-          accept="image/jpeg"
-          maxMBSize={5}
-          onFileUpload={setPublicUrl}
-        />
-
-        <div>
-          <Input
-            onChange={(e) => setTitle(e.target.value)}
-            className={cn(
-              "w-full !border-none !bg-black my-4 !text-4xl py-10 px-0 focus-visible:ring-0"
-            )}
-            type="text"
-            placeholder="Your story title"
-          />
-        </div>
-        <Editor />
       </div>
     </EditorContext.Provider>
   );

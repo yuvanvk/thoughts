@@ -1,3 +1,6 @@
+import { Home, Pen } from "@/components/branding/icons";
+import { BookOpen } from "lucide-react";
+
 export const Category = [
     {
         id: 1,
@@ -36,3 +39,25 @@ export const Category = [
         route: "tools"
     }
 ];
+
+
+export const SidebarContent = [
+    {
+        id: 1,
+        name: "Home",
+        icon: Home,
+        route: "/home"
+    },
+    {
+        id: 2,
+        name: "Write",
+        icon: Pen,
+        route: "/write"
+    },
+    {
+        id: 3,
+        name: "My blogs",
+        icon: BookOpen,
+        route: "/myblogs"
+    }
+]
