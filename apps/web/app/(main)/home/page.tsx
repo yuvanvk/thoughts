@@ -1,5 +1,4 @@
 import { Home } from "@/components/blog/home";
-import { useTRPC } from "@/lib/trpc/trpc";
 import { auth } from "@workspace/auth/better-auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
