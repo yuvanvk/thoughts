@@ -4,13 +4,13 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function HomePage() {
-  const data = await auth.api.getSession({
-    headers: await headers(),
-  });
+const data = await auth.api.getSession({
+  headers: await headers(),
+});
 
-  if (!data?.session) {
-    redirect("/login");
-  }
+if (!data?.session) {
+  redirect("/login");
+}
 
   return <Home />
 
