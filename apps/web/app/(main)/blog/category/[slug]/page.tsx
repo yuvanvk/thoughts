@@ -1,3 +1,4 @@
+import { CategoryBlogs } from "@/components/blog/category-blogs";
 import { auth } from "@workspace/auth/better-auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -10,8 +11,5 @@ export default async function CategorySlugPage() {
       if (!data?.session) {
         redirect("/login");
       }
-    
-    return <div>
-        Category-wise blogs
-    </div>
+    return <CategoryBlogs />
 }
