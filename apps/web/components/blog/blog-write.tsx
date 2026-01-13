@@ -12,6 +12,7 @@ import { useTRPC } from "@/lib/trpc/trpc";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { motion } from "motion/react";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
@@ -84,7 +85,20 @@ export const BlogWriting = () => {
 
   return (
     <EditorContext.Provider value={providerValue}>
-      <div className="flex flex-col px-4 max-w-3xl mx-auto mt-5 xl:mt-16 h-[88vh]">
+      <motion.div
+        initial={{
+          opacity: 0,
+          filter: "blur(10px)"
+        }}
+        animate={{
+          opacity: 1,
+          filter: "blur(0px)"
+        }}
+        transition={{
+          duration: 0.3,
+          ease: "linear"
+        }}
+        className="flex flex-col px-4 max-w-3xl mx-auto mt-5 xl:mt-16 h-[88vh]">
         
         <FileUploader
           accept="image/jpeg"
@@ -126,7 +140,7 @@ export const BlogWriting = () => {
             )}
           </Button>
         </div>
-      </div>
+      </motion.div>
     </EditorContext.Provider>
   );
 };

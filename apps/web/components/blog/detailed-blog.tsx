@@ -16,6 +16,8 @@ import {
 } from "@workspace/ui/components/avatar";
 import { cn } from "@workspace/ui/lib/utils";
 
+import { motion } from "motion/react";
+
 export const DetailedBlog = () => {
   const router = useRouter();
   const params = useParams();
@@ -53,7 +55,23 @@ export const DetailedBlog = () => {
 
   return (
     <ScrollArea className={cn("h-[90vh] px-4")}>
-      <div className={cn("flex flex-col max-w-xl mx-auto space-y-6 w-full")}>
+      <motion.div
+        initial={{ 
+          opacity: 0, 
+          filter: "blur(10px)" 
+        }}
+        animate={{ 
+          opacity: 1,
+          filter: "blur(0px)" 
+        }}
+        transition={{ 
+          duration: 0.3, 
+          ease: "linear" 
+        }}
+        className={cn("flex flex-col max-w-xl mx-auto space-y-6",
+          "max-w-xl mx-auto w-full"
+        )}
+      >
         <div className={cn("w-full h-72 relative")}>
           {isLoading ? (
             <Skeleton className={cn("absolute inset-0")} />
@@ -66,8 +84,12 @@ export const DetailedBlog = () => {
             />
           )}
         </div>
-        <div className={cn("flex items-start justify-between mt-3")}>
-          <div className={cn("flex flex-col max-w-3/4")}>
+        <div className={cn("flex items-start justify-between",
+          "mt-3"
+        )}>
+          <div className={cn("flex flex-col",
+            "max-w-3/4"
+          )}>
             <div className={cn("text-[42px] tracking-tight font-medium")}>
               {isLoading ? (
                 <Skeleton className={cn("w-full")} />
@@ -75,7 +97,9 @@ export const DetailedBlog = () => {
                 `${data?.blog?.title}`
               )}
             </div>
-            <div className={cn("flex items-center gap-x-2 ml-2")}>
+            <div className={cn("flex items-center gap-x-2",
+              "ml-2"
+            )}>
               <Avatar className={cn("w-6 h-6")}>
                 <AvatarImage src="https://github.com/shadcn.png" alt="avatar" />
                 <AvatarFallback>AV</AvatarFallback>
@@ -119,7 +143,7 @@ export const DetailedBlog = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </ScrollArea>
   );
 };
