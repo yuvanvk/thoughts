@@ -3,22 +3,23 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id            String    @id
+  id            String     @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
   blogs         Blog[]
+  bookmarks     Bookmark[]
 
   @@unique([email])
   @@map("user")
@@ -79,7 +80,9 @@ model Blog {
 
   userId String
   tags   Tag[]  @relation("BlogTags")
-  user   User   @relation(fields: [userId], references: [id])
+
+  bookmarks Bookmark[]
+  user      User       @relation(fields: [userId], references: [id])
 
   @@map("blog")
 }
@@ -88,4 +91,15 @@ model Tag {
   id   String @id @default(uuid())
   name String @unique
   blog Blog[] @relation("BlogTags")
+}
+
+model Bookmark {
+  id          String @id @default(uuid())
+  blogId      String
+  userId      String
+
+  blog        Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
 }

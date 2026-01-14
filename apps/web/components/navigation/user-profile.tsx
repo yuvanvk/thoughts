@@ -9,12 +9,14 @@ import { cn } from "@workspace/ui/lib/utils";
 import { Bookmark, Moon, Power, Settings, Sun, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export const UserProfile = () => {
   const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const ref = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -76,11 +78,12 @@ export const UserProfile = () => {
               </button>
             </div>
 
-            <div
+            <button
+              disabled
               className={cn(
                 "flex items-center gap-x-2  tracking-tight rounded-[9px]",
                 "hover:bg-indigo-50 dark:hover:bg-neutral-800",
-                "px-4 py-2 mx-3 mt-5 cursor-pointer",
+                "px-4 py-2 mx-3 mt-5 cursor-default",
               )}
             >
               <Avatar className={cn("w-5 h-5")}>
@@ -88,16 +91,17 @@ export const UserProfile = () => {
                 <AvatarFallback>AV</AvatarFallback>
               </Avatar>
 
-              <div className={cn("flex flex-col")}>
+              <div className={cn("flex flex-col items-start")}>
                 <div className={cn("text-[13px]")}>Abhi Vignesh</div>
-                <div className={cn("text-[10px] text-neutral-400")}>
-                  Checkout your profile.
+                <div className={cn("text-[10px] text-neutral-400 lowercase")}>
+                    abhivigneshofficial@gmail.com
                 </div>
                 <div></div>
               </div>
-            </div>
+            </button>
 
-            <div
+            <button
+            onClick={() => router.push("/settings")}
               className={cn( 
                 "flex items-center gap-x-2  tracking-tight rounded-[9px]",
                 "hover:bg-indigo-50 dark:hover:bg-neutral-800",
@@ -106,16 +110,17 @@ export const UserProfile = () => {
             >
               <Settings size={17} />
 
-              <div className={cn("flex flex-col")}>
+              <div className={cn("flex flex-col items-start")}>
                 <div className={cn("text-[13px]")}>Settings</div>
                 <div className={cn("text-[10px] text-neutral-400")}>
                   Edit your profile, account.
                 </div>
                 <div></div>
               </div>
-            </div>
+            </button>
 
-            <div
+            <button
+              onClick={() => router.push("/bookmarks")}
               className={cn(
                 "flex items-center gap-x-2  tracking-tight rounded-[9px]",
                 "hover:bg-indigo-50 dark:hover:bg-neutral-800",
@@ -124,14 +129,14 @@ export const UserProfile = () => {
             >
               <Bookmark size={17} />
 
-              <div className={cn("flex flex-col")}>
+              <div className={cn("flex flex-col items-start")}>
                 <div className={cn("text-[13px]")}>Bookmarks</div>
                 <div className={cn("text-[10px] text-neutral-400")}>
                   Saved blogs to visit later.
                 </div>
                 <div></div>
               </div>
-            </div>
+            </button>
 
             <div
               className={cn(

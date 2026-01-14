@@ -107,5 +107,41 @@ export const blogRouter = router({
               message: "Something went wrong"
             })
         }
+      }),
+      filter: publicProcedure
+      .input(z.object({
+        tag: z.string()
+      }))
+      .query(async (opts) => {
+        try {
+          if(!opts.ctx.session?.session) {
+            throw new TRPCError({
+              code: "UNAUTHORIZED",
+              message: "Please login to proceed"
+            })
+          }
+          const { tag } = opts.input;
+  
+          const blogs = await prisma.blog.findMany({
+            where: {
+              tags: {
+                some: {
+                  name: tag
+                }
+              }
+            }
+          });
+
+          return { message: "OK", status: 200, blogs };
+        } catch (error) {
+          if(error instanceof TRPCError) {
+            throw error
+          }
+
+          throw new TRPCError({
+            code: "BAD_GATEWAY",
+            message: "Something went wrong"
+          })
+        }
       })
 });
