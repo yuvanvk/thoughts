@@ -97,21 +97,21 @@ export const FileUploader = ({
       <div
         onClick={() => inputRef.current?.click()}
         className={cn(
-          "group h-64 bg-neutral-900 flex flex-col items-center justify-center space-y-2 w-full border-2 border-dashed cursor-pointer rounded-2xl relative",
-          "border-2 border-dashed hover:border-neutral-700",
+          "group h-64 bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center justify-center space-y-2 w-full border-2 border-dashed cursor-pointer rounded-2xl relative",
+          "border-2 border-dashed hover:border-neutral-300 dark:hover:border-neutral-700",
           "transition-all duration-200"
         )}
       >
         <div
           className={cn(
-            "flex items-center justify-center border border-neutral-800 rounded-[10px] p-4 duration-200",
+            "flex items-center justify-center border border-neutral-300 dark:border-neutral-800 rounded-[10px] p-4 duration-200",
             "group-hover:shadow-neutral-600/70 shadow-xs"
           )}
         >
           <ImagePlus
             size={20}
             className={cn(
-              "text-neutral-500 group-hover:text-neutral-300",
+              "text-neutral-400 group-hover:text-neutral-500 dark:text-neutral-500 group-dark:hover:text-neutral-300",
               "duration-200 transition-all"
             )}
           />

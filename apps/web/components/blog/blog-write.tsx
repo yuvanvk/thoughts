@@ -110,7 +110,7 @@ export const BlogWriting = () => {
           <Input
             onChange={(e) => setTitle(e.target.value)}
             className={cn(
-              "w-full !border-none !bg-neutral-900 my-4 !text-4xl py-10 px-0 focus-visible:ring-0"
+              "w-full border-none! dark:bg-neutral-900! my-4 !text-4xl py-10 px-0 focus-visible:ring-0 shadow-none"
             )}
             type="text"
             placeholder="Your story title"

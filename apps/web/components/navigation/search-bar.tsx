@@ -1,6 +1,7 @@
 "use client";
 
 import { Input } from "@workspace/ui/components/input";
+import { cn } from "@workspace/ui/lib/utils";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
@@ -16,7 +17,10 @@ export const Searchbar = () => {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setOpen(true)}
           placeholder="Search"
-          className="border-none !bg-neutral-900  focus:ring-0 outline-none focus-visible:ring-0 flex-1 text-sm! h-7 px-0 py-0"
+          className={cn("flex-1 border-none outline-none text-sm! h-7 px-0 py-0",
+            "dark:bg-neutral-900!",
+            "focus:ring-0 focus-visible:ring-0"
+          )}
         />
       </div>
     </div>
