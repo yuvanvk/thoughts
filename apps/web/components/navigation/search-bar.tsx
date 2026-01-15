@@ -16,7 +16,7 @@ export const Searchbar = () => {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setOpen(true)}
           placeholder="Search"
-          className="border-none  focus:ring-0 outline-none focus-visible:ring-0 flex-1 text-sm! h-7 px-0 py-0"
+          className="border-none !bg-neutral-900  focus:ring-0 outline-none focus-visible:ring-0 flex-1 text-sm! h-7 px-0 py-0"
         />
       </div>
     </div>

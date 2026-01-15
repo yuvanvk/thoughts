@@ -6,6 +6,7 @@ import { Label } from "@workspace/ui/components/label";
 import { cn } from "@workspace/ui/lib/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { motion } from "motion/react";
 
 export const Settings = () => {
   const router = useRouter();
@@ -13,11 +14,21 @@ export const Settings = () => {
   const [settings, setSettings] = useState({
     firstName: "",
     lastName: "",
-    password: ""
+    password: "",
   });
 
   return (
-    <div>
+    <motion.div
+      initial={{
+        opacity: 0,
+        filter: "blur(10px)"
+      }}
+      animate={{
+        opacity: 1,
+        filter: "blur(0px)"
+      }}
+      
+    >
       <div className="px-16 py-4 flex flex-col font-sans">
         <div className="space-y-3">
           <div>
@@ -38,8 +49,8 @@ export const Settings = () => {
                 onChange={(e) => {
                   setSettings({
                     ...settings,
-                    firstName: e.target.value
-                  })
+                    firstName: e.target.value,
+                  });
                 }}
                 placeholder="Yuvan"
                 className={cn(
@@ -57,10 +68,12 @@ export const Settings = () => {
                 Last name
               </Label>
               <Input
-                onChange={(e) => setSettings({
-                  ...settings,
-                  lastName: e.target.value
-                })}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    lastName: e.target.value,
+                  })
+                }
                 placeholder="Kappala"
                 className={cn(
                   "rounded-[10px] border",
@@ -89,10 +102,12 @@ export const Settings = () => {
                 Password
               </Label>
               <Input
-                onChange={(e) => setSettings({
-                  ...settings,
-                  password: e.target.value
-                })}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    password: e.target.value,
+                  })
+                }
                 placeholder="*****"
                 className={cn(
                   "rounded-[10px] border",
@@ -125,6 +140,6 @@ export const Settings = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
