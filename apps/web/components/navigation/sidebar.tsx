@@ -9,7 +9,6 @@ export const Sidebar = () => {
   const router = useRouter();
   const isMobile = useMobile();
   
-
   return (
     <div className="hidden lg:flex flex-col space-y-5 py-2 px-1 min-w-[200px] h-full">
       <div className="flex items-center gap-x-2">

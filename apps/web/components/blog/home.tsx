@@ -8,6 +8,8 @@ import { motion } from "motion/react";
 export const Home = () => {
   const trpc = useTRPC();
 
+  
+
   return (
     <motion.div
       initial={{ opacity: 0, filter: "blur(10px)" }}

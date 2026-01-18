@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { publicProcedure, router } from "../trpc";
+import { publicProcedure, router } from "../../trpc";
 import * as z from "zod";
 
 export const validRouter = router({

@@ -1,4 +1,4 @@
-import { publicProcedure, router } from "../trpc";
+import { publicProcedure, router } from "../../trpc";
 import prisma from "@workspace/db/prisma";
 import { TRPCError } from "@trpc/server";
 
