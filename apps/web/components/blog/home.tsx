@@ -1,7 +1,7 @@
 "use client";
 
 import { BlogCard } from "./blog-card";
-import { PersonalBrand } from "../branding/personal-brand";
+import { PersonalBrand } from "@/components/branding/personal-brand";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { motion } from "motion/react";
 
