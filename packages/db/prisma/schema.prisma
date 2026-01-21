@@ -75,6 +75,9 @@ model Blog {
   title       String
   description String
   imageUrl    String?
+
+  status      PostStatus @default(DRAFT)
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -102,4 +105,9 @@ model Bookmark {
   user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt   DateTime @default(now())
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
 }
