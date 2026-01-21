@@ -13,7 +13,6 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Eye, Loader2, Save, Send, Trash } from "lucide-react";
 import { motion } from "motion/react";
-import { Separator } from "@workspace/ui/components/separator";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
@@ -119,14 +118,14 @@ export const BlogWriting = () => {
         </div>
         <Editor />
         <div className={cn("flex items-center justify-between fixed bottom-3 left-1/2 -translate-x-1/2",
-          "max-w-lg w-full bg-neutral-800 px-2 py-2 rounded-full"
+          "max-w-lg w-full bg-neutral-100 dark:bg-neutral-800 px-2 py-2 rounded-full shadow"
         )}>
           <div className={cn("flex items-center gap-x-1")}>
             <Button
               onClick={handlePublish}
               className={cn(
                 "rounded-full bg-rose-500 text-white cursor-pointer px-3! py-4!",
-                "hover:bg-rose-800 border border-rose-300"
+                "hover:bg-rose-600 border border-rose-300"
               )}
               size={"sm"}
             >
@@ -140,13 +139,13 @@ export const BlogWriting = () => {
 
               )}
             </Button>
-            <div className="w-px h-7 bg-neutral-700 ml-1" />
+            <div className="w-px h-7 bg-neutral-300 dark:bg-neutral-700 ml-1" />
           </div>
 
           <Button
             size={"sm"}
-            className={cn("bg-transparent text-white",
-              "hover:bg-neutral-700 rounded-[9px] cursor-pointer"
+            className={cn("bg-transparent text-black dark:text-white",
+              "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none"
             )}
           >
             <Save />
@@ -155,8 +154,8 @@ export const BlogWriting = () => {
 
           <Button
             size={"sm"}
-            className={cn("bg-transparent text-white",
-              "hover:bg-neutral-700 rounded-[9px] cursor-pointer"
+            className={cn("bg-transparent text-black dark:text-white",
+              "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none"
             )}
           >
             <Eye />
@@ -164,7 +163,7 @@ export const BlogWriting = () => {
           </Button>
 
           <div className={cn("flex items-center gap-x-1")}>
-            <div className="w-px h-7 bg-neutral-700 mr-1" />
+            <div className="w-px h-7 bg-neutral-300 dark:bg-neutral-700 mr-1" />
             <Button
               onClick={handlePublish}
               className={cn(
