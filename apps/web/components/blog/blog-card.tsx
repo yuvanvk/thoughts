@@ -7,6 +7,7 @@ import {
 } from "@workspace/ui/components/avatar";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 
 interface BlogCardProps {
@@ -15,7 +16,7 @@ interface BlogCardProps {
       id: string;
       title: string;
       description: string;
-      createdAt: string | Date;
+      createdAt: Date;
       imageUrl?: string | null;
       tags?: { id: string; name: string }[];
       user?: {
@@ -26,16 +27,28 @@ interface BlogCardProps {
 
 }
 
-export const BlogCard = ({ variant }: BlogCardProps) => {
+export const BlogCard = ({ variant, blog }: BlogCardProps) => {
     const isColumn = variant === "col";
+    const router = useRouter();
+
+
+    function formatDate(date: Date | string) {
+      
+      const d = (date instanceof Date) ? date : new Date(date)
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      }).format(d)
+    }
 
 
   return (
-    <div className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}>
+    <div onClick={() => router.push(`/blog/${blog.id}`)} className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}>
       <div className={`${isColumn ? "w-full aspect-video" : "w-40 h-40 aspect-square"} relative `}>
         <Image
-          src={"https://dqy38fnwh4fqs.cloudfront.net/blog/featured-bf77b9a5-c7c3-49fa-a9a0-e48937b046b1"}
-          alt="h"
+          src={blog.imageUrl!}
+          alt={blog.imageUrl!}
           className="object-cover rounded-[10px]"
           fill
         />
@@ -43,13 +56,10 @@ export const BlogCard = ({ variant }: BlogCardProps) => {
       <div className={`flex flex-col justify-between ${isColumn ? "gap-y-5 mt-3" : "gap-y-1"} p-4`}>
         <div>
           <div className="font-medium text-sm font-sans tracking-tight">
-            Pick the Best Travel Guide To Enjoy With Travel Switzerland in Feb
+            {blog.title}
           </div>
           <div className="text-neutral-500 text-xs line-clamp-2 font-sans">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Exercitationem saepe dolorem itaque quia. Nemo mollitia vero, ex
-            assumenda impedit atque dolorem architecto amet ullam doloribus?
-            Consectetur ipsa maxime magni ipsum!
+            {blog.description}
           </div>
         </div>
         <div className="flex items-center justify-between">
@@ -59,11 +69,11 @@ export const BlogCard = ({ variant }: BlogCardProps) => {
               <AvatarFallback>AV</AvatarFallback>
             </Avatar>
             <span className=" text-[10px] font-medium uppercase font-mono text-gray-300">
-              Abhi Vignesh
+              {blog.user?.name}
             </span>
           </div>
           <div className="text-[10px] font-light font-mono text-gray-300">
-            25/05/2005
+            {formatDate(blog.createdAt)}
           </div>
         </div>
       </div>
