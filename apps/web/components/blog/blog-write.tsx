@@ -11,8 +11,9 @@ import { useEditor, EditorContext } from "@tiptap/react";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Eye, Loader2, Save, Send, Trash } from "lucide-react";
 import { motion } from "motion/react";
+import { Separator } from "@workspace/ui/components/separator";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
@@ -99,7 +100,7 @@ export const BlogWriting = () => {
           ease: "linear"
         }}
         className="flex flex-col px-4 max-w-3xl mx-auto mt-5 xl:mt-16 h-[88vh]">
-        
+
         <FileUploader
           accept="image/jpeg"
           maxMBSize={5}
@@ -117,28 +118,72 @@ export const BlogWriting = () => {
           />
         </div>
         <Editor />
-        <div className={cn("flex items-center justify-between pb-5")}>
+        <div className={cn("flex items-center justify-between fixed bottom-3 left-1/2 -translate-x-1/2",
+          "max-w-lg w-full bg-neutral-800 px-2 py-2 rounded-full"
+        )}>
+          <div className={cn("flex items-center gap-x-1")}>
+            <Button
+              onClick={handlePublish}
+              className={cn(
+                "rounded-full bg-rose-500 text-white cursor-pointer px-3! py-4!",
+                "hover:bg-rose-800 border border-rose-300"
+              )}
+              size={"sm"}
+            >
+              {publishMutation.isPending ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <>
+                  <Trash />
+                  <span>Delete</span>
+                </>
+
+              )}
+            </Button>
+            <div className="w-px h-7 bg-neutral-700 ml-1" />
+          </div>
+
           <Button
-            onClick={() => router.push("/home")}
-            className={cn("rounded-[8px] cursor-pointer")}
             size={"sm"}
+            className={cn("bg-transparent text-white",
+              "hover:bg-neutral-700 rounded-[9px] cursor-pointer"
+            )}
           >
-            Cancel
+            <Save />
+            Save
           </Button>
+
           <Button
-            onClick={handlePublish}
-            className={cn(
-              "rounded-[8px] bg-lime-700 text-white cursor-pointer",
-              "hover:bg-lime-800"
-            )}
             size={"sm"}
-          >
-            {publishMutation.isPending ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              "Publish"
+            className={cn("bg-transparent text-white",
+              "hover:bg-neutral-700 rounded-[9px] cursor-pointer"
             )}
+          >
+            <Eye />
+            Preview
           </Button>
+
+          <div className={cn("flex items-center gap-x-1")}>
+            <div className="w-px h-7 bg-neutral-700 mr-1" />
+            <Button
+              onClick={handlePublish}
+              className={cn(
+                "rounded-full bg-lime-500 text-black cursor-pointer px-3! py-4!",
+                "hover:bg-lime-600 border border-lime-300"
+              )}
+              size={"sm"}
+            >
+              {publishMutation.isPending ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <>
+                  <Send />
+                  <span>Publish</span>
+                </>
+
+              )}
+            </Button>
+          </div>
         </div>
       </motion.div>
     </EditorContext.Provider>
