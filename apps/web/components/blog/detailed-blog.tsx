@@ -92,26 +92,26 @@ export const DetailedBlog = () => {
           )}>
             <div className={cn("text-[42px] tracking-tight font-medium")}>
               {isLoading ? (
-                <Skeleton className={cn("w-full")} />
+                <Skeleton className={cn("w-full h-16")} />
               ) : (
                 `${data?.blog?.title}`
               )}
             </div>
-            <div className={cn("flex items-center gap-x-2",
+            <div className={cn("flex items-center gap-x-2 mt-5",
               "ml-2"
             )}>
-              <Avatar className={cn("w-6 h-6")}>
+              {isLoading ? <Skeleton className={cn("w-8 h-8 rounded-full")}/> : <Avatar className={cn("w-6 h-6")}>
                 <AvatarImage src="https://github.com/shadcn.png" alt="avatar" />
                 <AvatarFallback>AV</AvatarFallback>
-              </Avatar>
+              </Avatar>}
               <div className={cn("flex flex-col")}>
-                <div className={cn("uppercase text-xs")}>Abhi Vignesh</div>
+                {isLoading ? <Skeleton className="h-4 max-w-40 my-2"/> : <div className={cn("uppercase text-xs")}>{data?.blog.user.name}</div>}
                 <div className={cn("flex items-center")}>
                   <div
                     className={cn("text-[10px] font-sans  text-neutral-400")}
                   >
                     {isLoading ? (
-                      <Skeleton className={cn("w-64 h-5")} />
+                      <Skeleton className={cn("w-20 h-3 mr-1")} />
                     ) : (
                       formatDate(data?.blog?.createdAt!)
                     )}
@@ -122,7 +122,7 @@ export const DetailedBlog = () => {
                     )}
                   >
                     {isLoading ? (
-                      <Skeleton className={cn("w-20 h-5")} />
+                      <Skeleton className={cn("w-10 h-3")} />
                     ) : (
                       `· ${estimatedTime(data?.blog.description!)} min read`
                     )}
@@ -136,7 +136,7 @@ export const DetailedBlog = () => {
               )}
             >
               {isLoading ? (
-                <Skeleton className={cn("w-full xl:w-6xl h-32 flex-1")} />
+                <Skeleton className={cn("min-w-xl h-32 flex-1")} />
               ) : (
                 parse(`${data?.blog.description}`)
               )}

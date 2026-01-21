@@ -62,6 +62,19 @@ export const blogRouter = router({
           where: {
             id: opts.input.id,
           },
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            createdAt: true,
+            imageUrl: true,
+            user: {
+              select: {
+                name: true,
+                image: true
+              }
+            }
+          }
         });
 
         if (!blog) {
