@@ -10,7 +10,20 @@ import Image from "next/image";
 
 
 interface BlogCardProps {
-    variant?: "row" | "col"
+    variant?: "row" | "col",
+    blog: {
+      id: string;
+      title: string;
+      description: string;
+      createdAt: string | Date;
+      imageUrl?: string | null;
+      tags?: { id: string; name: string }[];
+      user?: {
+        name: string;
+        image: string | null;
+      }
+    }
+
 }
 
 export const BlogCard = ({ variant }: BlogCardProps) => {

@@ -48,7 +48,7 @@ export const CategoryBlogs = () => {
         }}
         className="grid grid-cols-2 gap-4">
           {data.blogs.length > 0 &&
-            data.blogs.map((b) => <BlogCard key={b.id} variant="col" />)}
+            data.blogs.map((b) => <BlogCard key={b.id} variant="col" blog={b} />)}
         </motion.div>
       )}
     </div>
