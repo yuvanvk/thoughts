@@ -1,5 +1,5 @@
 import { Home, Pen } from "@/components/branding/icons";
-import { BookOpen } from "lucide-react";
+import { BookOpen, ScrollText } from "lucide-react";
 
 export const Category = [
     {
@@ -55,9 +55,15 @@ export const SidebarContent = [
         route: "/write"
     },
     {
-        id: 3,
+        id: 3, 
+        name: "Drafts",
+        icon: ScrollText,
+        route: "/drafts"
+    },
+    {
+        id: 4,
         name: "My blogs",
         icon: BookOpen,
         route: "/myblogs"
-    }
+    },
 ]

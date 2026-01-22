@@ -28,11 +28,7 @@ export const UserBlogs = () => {
           <div>
             {isFetching && (
               <div className={cn("grid grid-cols-2 gap-4  mt-2")}>
-                <Skeleton className="w-full h-52" />
-                <Skeleton className="w-full h-52" />
-
-                <Skeleton className="w-full h-52" />
-                <Skeleton className="w-full h-52" />
+                {[0, 1, 2, 3].map(i => <Skeleton key={i} className="w-full h-52" />)}
               </div>
             )}
 

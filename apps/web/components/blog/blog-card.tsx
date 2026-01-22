@@ -5,50 +5,52 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar";
+import { PostStatus } from "@prisma/client";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 
 interface BlogCardProps {
-    variant?: "row" | "col",
-    blog: {
-      id: string;
-      title: string;
-      description: string;
-      createdAt: Date;
-      imageUrl?: string | null;
-      tags?: { id: string; name: string }[];
-      user?: {
-        name: string;
-        image: string | null;
-      }
+  variant?: "row" | "col",
+  blog: {
+    id: string;
+    title: string;
+    description: string;
+    status: PostStatus;
+    createdAt: Date | string;
+    imageUrl?: string | null;
+    tags?: { id: string; name: string }[];
+    user?: {
+      name: string;
+      image: string | null;
     }
+  }
 
 }
 
 export const BlogCard = ({ variant, blog }: BlogCardProps) => {
-    const isColumn = variant === "col";
-    const router = useRouter();
+  const isColumn = variant === "col";
+  const router = useRouter();
 
 
-    function formatDate(date: Date | string) {
-      
-      const d = (date instanceof Date) ? date : new Date(date)
-      return new Intl.DateTimeFormat("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-      }).format(d)
-    }
+  function formatDate(date: Date | string) {
+
+    const d = (date instanceof Date) ? date : new Date(date)
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }).format(d)
+  }
 
 
   return (
-    <div onClick={() => router.push(`/blog/${blog.id}`)} className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}>
+    <div onClick={() => router.push(`/write/${blog.id}`)} className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}>
       <div className={`${isColumn ? "w-full aspect-video" : "w-40 h-40 aspect-square"} relative `}>
         <Image
-          src={blog.imageUrl!}
-          alt={blog.imageUrl!}
+          src={blog.imageUrl ? blog.imageUrl : "/images/default_banner.jpeg"}
+          alt={blog.imageUrl ? blog.imageUrl : "default_image"}
           className="object-cover rounded-[10px]"
           fill
         />
@@ -56,10 +58,10 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
       <div className={`flex flex-col justify-between ${isColumn ? "gap-y-5 mt-3" : "gap-y-1"} p-4`}>
         <div>
           <div className="font-medium text-sm font-sans tracking-tight">
-            {blog.title}
+            {blog.title || "Title"}
           </div>
           <div className="text-neutral-500 text-xs line-clamp-2 font-sans">
-            {blog.description}
+            {blog.description || "Write..."}
           </div>
         </div>
         <div className="flex items-center justify-between">

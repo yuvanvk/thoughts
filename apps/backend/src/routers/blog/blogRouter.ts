@@ -68,6 +68,8 @@ export const blogRouter = router({
             title,
             description,
             imageUrl: image,
+            status: "PUBLISHED",
+            updatedAt: new Date(),
           },
         });
 
@@ -97,6 +99,7 @@ export const blogRouter = router({
         const blog = await prisma.blog.findUnique({
           where: {
             id: opts.input.id,
+            status: "PUBLISHED",
           },
           select: {
             id: true,
@@ -143,6 +146,7 @@ export const blogRouter = router({
       const blogs = await prisma.blog.findMany({
         where: {
           userId: opts.ctx.session.user.id,
+          status: "PUBLISHED"
         },
       });
 
@@ -206,6 +210,7 @@ export const blogRouter = router({
           })
         }
         const blogs = await prisma.blog.findMany({
+          where: { status: "PUBLISHED" },
           select: {
             id: true,
             title: true,
@@ -224,6 +229,33 @@ export const blogRouter = router({
 
 
         return { message: "OK", status:200, blogs }
+      } catch (error) {
+        if(error instanceof TRPCError) {
+          throw error
+        }
+
+        throw new TRPCError({
+          code: "BAD_GATEWAY",
+          message: "Something went wrong"
+        })
+      }
+    }),
+    getDrafts: publicProcedure
+    .query(async (opts) => {
+      try {
+        if(!opts.ctx.session?.session) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Please login to proceed"
+          })
+        }
+
+        const drafts = await prisma.blog.findMany({
+          where: { status: "DRAFT" },
+        })
+
+        return { message: "OK", status: 200, drafts }
+        
       } catch (error) {
         if(error instanceof TRPCError) {
           throw error
