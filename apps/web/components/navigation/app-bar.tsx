@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useMobile } from "@/hooks/useMobile";
 import { Button } from "@workspace/ui/components/button";
 import { ArrowLeft } from "lucide-react";
@@ -10,7 +10,11 @@ export const Appbar = () => {
   const router = useRouter();
   const isMobile = useMobile();
   const params = useParams();
+  const pathName = usePathname();
+  
+  const currentPath = pathName.split("/")[1]
   const { id } = params;
+  
   return (
     <div className="w-full h-fit z-50 backdrop-blur-3xl border-b">
       <div className="w-full  mx-auto flex items-center justify-between px-3 xl:px-4 py-[12.9px]">
@@ -25,7 +29,7 @@ export const Appbar = () => {
               <ArrowLeft size={20} />
             </Button>
           )}
-          <p className="text-[15px] font-medium font-sans">Blogs</p>
+          <p className="text-[15px] font-medium font-sans capitalize">{currentPath}</p>
         </div>
 
         {isMobile && <UserProfile />}
