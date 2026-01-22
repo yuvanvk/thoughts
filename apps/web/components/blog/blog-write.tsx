@@ -48,9 +48,11 @@ export const BlogWriting = () => {
   const [title, setTitle] = useState<string | null>(null);
 
   const params = useParams();
+  const { id } = params;
+  
   
   const trpc = useTRPC();
-  const publishMutation = useMutation(trpc.blog.create.mutationOptions());
+  const publishMutation = useMutation(trpc.blog.publish.mutationOptions());
 
   if (!editor) {
     return null;
@@ -63,6 +65,11 @@ export const BlogWriting = () => {
         return;
       }
 
+      if(!id) {
+        toast.error("No valid id found");
+        return
+      }
+
       if (editor?.isEmpty) {
         toast.error("The content is empty. Please provide some content");
         return;
@@ -72,6 +79,7 @@ export const BlogWriting = () => {
         title,
         description: editor.getHTML(),
         image: publicUrl,
+        id: id as string
       });
 
       if (response.status !== 200) {

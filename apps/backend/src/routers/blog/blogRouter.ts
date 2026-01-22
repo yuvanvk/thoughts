@@ -5,44 +5,6 @@ import { publicProcedure, router } from "../../trpc";
 import { TRPCError } from "@trpc/server";
 
 export const blogRouter = router({
-  create: publicProcedure
-    .input(
-      z.object({
-        title: z.string().min(5).max(100),
-        description: z.string(),
-        image: z.string().nullable().optional(),
-      })
-    )
-    .mutation(async (opts) => {
-      try {
-        const title = opts.input.title;
-        const description = opts.input.description;
-        const image = opts.input.image;
-
-        if (!opts.ctx.session?.session) {
-          throw new TRPCError({
-            code: "UNAUTHORIZED",
-            message: "Please login to proceed.",
-          });
-        }
-
-        await prisma.blog.create({
-          data: {
-            title,
-            description,
-            imageUrl: image,
-            userId: opts.ctx.session.session.userId,
-          },
-        });
-
-        return { message: "Blog created Successfully", status: 200 };
-      } catch (error) {
-        throw new TRPCError({
-          code: "BAD_GATEWAY",
-          message: "Something went wrong. Please try again later.",
-        });
-      }
-    }),
   createDraft: publicProcedure
   .mutation(async (opts) => {
     try {
@@ -77,6 +39,46 @@ export const blogRouter = router({
         })
     }
   }),
+  publish: publicProcedure
+    .input(
+      z.object({
+        title: z.string().min(5).max(100),
+        description: z.string(),
+        image: z.string().nullable().optional(),
+        id: z.string()
+      })
+    )
+    .mutation(async (opts) => {
+      try {
+        const title = opts.input.title;
+        const description = opts.input.description;
+        const image = opts.input.image;
+        const id = opts.input.id;
+
+        if (!opts.ctx.session?.session) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Please login to proceed.",
+          });
+        }
+
+        await prisma.blog.update({
+          where: { id },
+          data: {
+            title,
+            description,
+            imageUrl: image,
+          },
+        });
+
+        return { message: "Blog created Successfully", status: 200 };
+      } catch (error) {
+        throw new TRPCError({
+          code: "BAD_GATEWAY",
+          message: "Something went wrong. Please try again later.",
+        });
+      }
+    }),
   get: publicProcedure
     .input(
       z.object({
