@@ -43,6 +43,40 @@ export const blogRouter = router({
         });
       }
     }),
+  createDraft: publicProcedure
+  .mutation(async (opts) => {
+    try {
+      
+      if(!opts.ctx.session?.session) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Please login to proceed"
+        });
+      }
+
+      const blog = await prisma.blog.create({
+        data: {
+          title: "",
+          description: "",   
+          userId: opts.ctx.session.session.userId
+        },
+      })
+
+      return { message: "Draft created", status: 200, id: blog.id }
+
+    } catch (error) {
+      console.log(error);
+      
+        if(error instanceof TRPCError) {
+          throw error
+        }
+
+        throw new TRPCError({
+          code: "BAD_GATEWAY",
+          message: "Something went wrong"
+        })
+    }
+  }),
   get: publicProcedure
     .input(
       z.object({
