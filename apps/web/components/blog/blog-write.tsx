@@ -5,7 +5,7 @@ import { Input } from "@workspace/ui/components/input";
 import { Editor } from "./editor";
 import { Button } from "@workspace/ui/components/button";
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FileUploader } from "@/components/file-upload/file-uploader";
 import { useEditor, EditorContext } from "@tiptap/react";
 import { useTRPC } from "@/lib/trpc/trpc";
@@ -47,6 +47,8 @@ export const BlogWriting = () => {
   const [publicUrl, setPublicUrl] = useState<string | null>(null);
   const [title, setTitle] = useState<string | null>(null);
 
+  const params = useParams();
+  
   const trpc = useTRPC();
   const publishMutation = useMutation(trpc.blog.create.mutationOptions());
 
