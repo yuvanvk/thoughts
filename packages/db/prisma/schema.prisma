@@ -72,9 +72,9 @@ model Verification {
 
 model Blog {
   id          String   @id @default(uuid())
-  title       String
-  description String
-  imageUrl    String?
+  title       String        @default("")
+  description String        @default("")
+  imageUrl    String?       
 
   status      PostStatus @default(DRAFT)
   
