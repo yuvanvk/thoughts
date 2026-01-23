@@ -9,7 +9,7 @@ import { useParams, useRouter } from "next/navigation";
 import { FileUploader } from "@/components/file-upload/file-uploader";
 import { useEditor, EditorContext } from "@tiptap/react";
 import { useTRPC } from "@/lib/trpc/trpc";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Eye, Loader2, Save, Send, Trash } from "lucide-react";
 import { motion } from "motion/react";
@@ -22,6 +22,18 @@ import Highlight from "@tiptap/extension-highlight";
 import Heading from "@tiptap/extension-heading";
 
 export const BlogWriting = () => {
+  const trpc = useTRPC();
+  const params = useParams();
+  const { id } = params;
+
+  const { isFetching, isError, data } = useQuery(trpc.blog.get.queryOptions({ id } as { id: string }));
+
+  const router = useRouter();
+  const [publicUrl, setPublicUrl] = useState<string | null>(data?.blog.imageUrl || null);
+  const [title, setTitle] = useState<string | null>(data?.blog.title || null);
+
+  const publishMutation = useMutation(trpc.blog.publish.mutationOptions());
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -32,7 +44,7 @@ export const BlogWriting = () => {
       Highlight,
       Heading,
     ],
-    content: "<p>Share your thoughts</p>",
+    content: data?.blog.description || "<p>Share your thoughts</p>",
     immediatelyRender: false,
     autofocus: true,
     editorProps: {
@@ -42,17 +54,13 @@ export const BlogWriting = () => {
     },
   });
 
-  const router = useRouter();
   const providerValue = useMemo(() => ({ editor }), [editor]);
-  const [publicUrl, setPublicUrl] = useState<string | null>(null);
-  const [title, setTitle] = useState<string | null>(null);
 
-  const params = useParams();
-  const { id } = params;
-  
-  
-  const trpc = useTRPC();
-  const publishMutation = useMutation(trpc.blog.publish.mutationOptions());
+  if (isError) {
+    toast.error(data?.message);
+    router.push("/home");
+    return;
+  }
 
   if (!editor) {
     return null;
@@ -65,9 +73,9 @@ export const BlogWriting = () => {
         return;
       }
 
-      if(!id) {
+      if (!id) {
         toast.error("No valid id found");
-        return
+        return;
       }
 
       if (editor?.isEmpty) {
@@ -79,7 +87,7 @@ export const BlogWriting = () => {
         title,
         description: editor.getHTML(),
         image: publicUrl,
-        id: id as string
+        id: id as string,
       });
 
       if (response.status !== 200) {
@@ -98,21 +106,22 @@ export const BlogWriting = () => {
       <motion.div
         initial={{
           opacity: 0,
-          filter: "blur(10px)"
+          filter: "blur(10px)",
         }}
         animate={{
           opacity: 1,
-          filter: "blur(0px)"
+          filter: "blur(0px)",
         }}
         transition={{
           duration: 0.3,
-          ease: "linear"
+          ease: "linear",
         }}
-        className="flex flex-col px-4 max-w-3xl mx-auto mt-5 xl:mt-16 h-[88vh]">
-
+        className="flex flex-col px-4 max-w-3xl mx-auto mt-5 xl:mt-16 h-[88vh]"
+      >
         <FileUploader
           accept="image/jpeg"
           maxMBSize={5}
+          previewUrl={data?.blog.imageUrl}
           onFileUpload={setPublicUrl}
         />
 
@@ -120,22 +129,26 @@ export const BlogWriting = () => {
           <Input
             onChange={(e) => setTitle(e.target.value)}
             className={cn(
-              "w-full border-none! dark:bg-neutral-900! my-4 !text-4xl py-10 px-0 focus-visible:ring-0 shadow-none"
+              "w-full border-none! dark:bg-neutral-900! my-4 !text-4xl py-10 px-0 focus-visible:ring-0 shadow-none",
             )}
+            value={data?.blog.title || ""}
             type="text"
             placeholder="Your story title"
           />
         </div>
         <Editor />
-        <div className={cn("flex items-center justify-between fixed bottom-3 left-1/2 -translate-x-1/2",
-          "max-w-lg w-full bg-neutral-100 dark:bg-neutral-800 px-2 py-2 rounded-full shadow"
-        )}>
+        <div
+          className={cn(
+            "flex items-center justify-between fixed bottom-3 left-1/2 -translate-x-1/2",
+            "max-w-lg w-full bg-neutral-100 dark:bg-neutral-800 px-2 py-2 rounded-full shadow",
+          )}
+        >
           <div className={cn("flex items-center gap-x-1")}>
             <Button
               onClick={handlePublish}
               className={cn(
                 "rounded-full bg-rose-500 text-white cursor-pointer px-3! py-4!",
-                "hover:bg-rose-600 border border-rose-300"
+                "hover:bg-rose-600 border border-rose-300",
               )}
               size={"sm"}
             >
@@ -146,7 +159,6 @@ export const BlogWriting = () => {
                   <Trash />
                   <span>Delete</span>
                 </>
-
               )}
             </Button>
             <div className="w-px h-7 bg-neutral-300 dark:bg-neutral-700 ml-1" />
@@ -154,8 +166,9 @@ export const BlogWriting = () => {
 
           <Button
             size={"sm"}
-            className={cn("bg-transparent text-black dark:text-white",
-              "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none"
+            className={cn(
+              "bg-transparent text-black dark:text-white",
+              "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none",
             )}
           >
             <Save />
@@ -164,8 +177,9 @@ export const BlogWriting = () => {
 
           <Button
             size={"sm"}
-            className={cn("bg-transparent text-black dark:text-white",
-              "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none"
+            className={cn(
+              "bg-transparent text-black dark:text-white",
+              "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none",
             )}
           >
             <Eye />
@@ -178,7 +192,7 @@ export const BlogWriting = () => {
               onClick={handlePublish}
               className={cn(
                 "rounded-full bg-lime-500 text-black cursor-pointer px-3! py-4!",
-                "hover:bg-lime-600 border border-lime-300"
+                "hover:bg-lime-600 border border-lime-300",
               )}
               size={"sm"}
             >
@@ -189,7 +203,6 @@ export const BlogWriting = () => {
                   <Send />
                   <span>Publish</span>
                 </>
-
               )}
             </Button>
           </div>

@@ -1,12 +1,12 @@
 "use client";
 
+import { cn } from "@workspace/ui/lib/utils";
+import { toast } from "sonner";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { useQuery } from "@tanstack/react-query";
 import { ScrollArea } from "@workspace/ui/components/scroll-area";
 import { Skeleton } from "@workspace/ui/components/skeleton";
-import { cn } from "@workspace/ui/lib/utils";
-import { BlogCard } from "../blog/blog-card";
-import { toast } from "sonner";
+import { BlogCard } from "@/components/blog/blog-card";
 import { useRouter } from "next/navigation";
 
 export const Drafts = () => {
@@ -15,12 +15,11 @@ export const Drafts = () => {
     const router = useRouter();
     const { isFetching, isError, data } = useQuery(trpc.blog.getDrafts.queryOptions());
 
-    if(isError) {
+    if (isError) {
         toast.error(data?.message)
         router.push("/home")
         return
     }
-    
 
     return <ScrollArea className={cn("w-full pb-5 px-4 h-[90vh]")}>
         <div>

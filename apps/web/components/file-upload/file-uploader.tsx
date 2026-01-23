@@ -13,6 +13,7 @@ import { uploadBannerImage } from "@/lib/supabase/upload-banner-images";
 interface FileUploaderProps {
   accept: string;
   maxMBSize: number;
+  previewUrl?: string | null;
   onFileUpload: Dispatch<SetStateAction<string | null>>;
 }
 
