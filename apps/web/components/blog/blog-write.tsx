@@ -28,20 +28,15 @@ export const BlogWriting = () => {
   const params = useParams();
   const { id } = params;
 
-  const { isFetching, isError, data } = useQuery(
-    trpc.blog.get.queryOptions({ id } as { id: string }),
-  );
+  const { isFetching, isError, data } = useQuery(trpc.blog.get.queryOptions({ id } as { id: string }));
 
   const router = useRouter();
-  const [publicUrl, setPublicUrl] = useState<string | null>(
-    data?.blog.imageUrl || null,
-  );
+  const [publicUrl, setPublicUrl] = useState<string | null>(data?.blog.imageUrl || null,);
   const [title, setTitle] = useState<string | null>(data?.blog.title || null);
-  const [isImageUploaded, setIsImageUploaded] = useState(
-    data?.blog.imageUrl ? true : false,
-  );
+  const [isImageUploaded, setIsImageUploaded] = useState(data?.blog.imageUrl ? true : false);
 
   const publishMutation = useMutation(trpc.blog.publish.mutationOptions());
+  const deleteMutation = useMutation(trpc.blog.deleteDraft.mutationOptions())
 
   const editor = useEditor({
     extensions: [
@@ -73,6 +68,17 @@ export const BlogWriting = () => {
 
   if (!editor) {
     return null;
+  }
+
+  const handleDelete = async () => {
+    try {
+      const response = await deleteMutation.mutateAsync({ id } as { id: string });
+      toast.success(response.messsage)
+      router.push("/home")
+      return
+    } catch (error: any) {
+      toast.error(`${error.message}`)
+    }
   }
 
   const handlePublish = async () => {
@@ -180,7 +186,7 @@ export const BlogWriting = () => {
         >
           <div className={cn("flex items-center gap-x-1")}>
             <Button
-              onClick={handlePublish}
+              onClick={handleDelete}
               className={cn(
                 "rounded-full bg-rose-500 text-white cursor-pointer px-3! py-4!",
                 "hover:bg-rose-600 border border-rose-300",

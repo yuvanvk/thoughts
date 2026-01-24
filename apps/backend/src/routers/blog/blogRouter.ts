@@ -227,7 +227,6 @@ export const blogRouter = router({
           }
         })
 
-
         return { message: "OK", status:200, blogs }
       } catch (error) {
         if(error instanceof TRPCError) {
@@ -256,6 +255,40 @@ export const blogRouter = router({
 
         return { message: "OK", status: 200, drafts }
         
+      } catch (error) {
+        if(error instanceof TRPCError) {
+          throw error
+        }
+
+        throw new TRPCError({
+          code: "BAD_GATEWAY",
+          message: "Something went wrong"
+        })
+      }
+    }),
+    deleteDraft: publicProcedure
+    .input(z.object({
+      id: z.string()
+    }))
+    .mutation(async (opts) => {
+      try {
+        if(!opts.ctx.session?.session) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Please login to proceed"
+          })
+        }
+  
+        const { id } = opts.input;
+        
+        await prisma.blog.delete({
+          where: {
+            id,
+            status: "DRAFT"
+          }
+        });
+  
+        return { messsage: "Deleted draft successfully", status: 200 }
       } catch (error) {
         if(error instanceof TRPCError) {
           throw error
