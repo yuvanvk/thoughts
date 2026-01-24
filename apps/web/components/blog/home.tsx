@@ -41,7 +41,6 @@ export const Home = () => {
         </div>
       </div>
 
-      <PersonalBrand />
     </motion.div>
   );
 };

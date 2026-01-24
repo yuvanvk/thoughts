@@ -11,7 +11,7 @@ import { useEditor, EditorContext } from "@tiptap/react";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Eye, Loader2, Save, Send, Trash } from "lucide-react";
+import { Eye, Loader2, Save, Send, Trash, X } from "lucide-react";
 import { motion } from "motion/react";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
@@ -20,17 +20,26 @@ import Italic from "@tiptap/extension-italic";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import Heading from "@tiptap/extension-heading";
+import { Skeleton } from "@workspace/ui/components/skeleton";
+import Image from "next/image";
 
 export const BlogWriting = () => {
   const trpc = useTRPC();
   const params = useParams();
   const { id } = params;
 
-  const { isFetching, isError, data } = useQuery(trpc.blog.get.queryOptions({ id } as { id: string }));
+  const { isFetching, isError, data } = useQuery(
+    trpc.blog.get.queryOptions({ id } as { id: string }),
+  );
 
   const router = useRouter();
-  const [publicUrl, setPublicUrl] = useState<string | null>(data?.blog.imageUrl || null);
+  const [publicUrl, setPublicUrl] = useState<string | null>(
+    data?.blog.imageUrl || null,
+  );
   const [title, setTitle] = useState<string | null>(data?.blog.title || null);
+  const [isImageUploaded, setIsImageUploaded] = useState(
+    data?.blog.imageUrl ? true : false,
+  );
 
   const publishMutation = useMutation(trpc.blog.publish.mutationOptions());
 
@@ -118,12 +127,38 @@ export const BlogWriting = () => {
         }}
         className="flex flex-col px-4 max-w-3xl mx-auto mt-5 xl:mt-16 h-[88vh]"
       >
-        <FileUploader
-          accept="image/jpeg"
-          maxMBSize={5}
-          previewUrl={data?.blog.imageUrl}
-          onFileUpload={setPublicUrl}
-        />
+        {isImageUploaded && (
+          <div className={cn("w-full h-72 relative")}>
+            {isFetching ? (
+              <Skeleton />
+            ) : (
+              <>
+                <Image
+                  src={data?.blog.imageUrl!}
+                  alt={data?.blog.imageUrl!}
+                  fill
+                  className={cn("object-cover rounded-2xl")}
+                />
+                <div
+                  className={cn(
+                    "p-1 bg-rose-500 absolute top-2 right-4 rounded-[9px]",
+                  )}
+                >
+                  <X onClick={() => setIsImageUploaded(false)} />
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {!isImageUploaded && (
+          <FileUploader
+            accept="image/jpeg"
+            maxMBSize={5}
+            previewUrl={data?.blog.imageUrl}
+            onFileUpload={setPublicUrl}
+          />
+        )}
 
         <div>
           <Input

@@ -99,7 +99,6 @@ export const blogRouter = router({
         const blog = await prisma.blog.findUnique({
           where: {
             id: opts.input.id,
-            status: "PUBLISHED",
           },
           select: {
             id: true,
@@ -218,6 +217,7 @@ export const blogRouter = router({
             createdAt: true,
             imageUrl: true,
             tags: true,
+            status: true,
             user: {
               select: {
                 name: true,
