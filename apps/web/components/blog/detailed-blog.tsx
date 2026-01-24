@@ -77,7 +77,8 @@ export const DetailedBlog = () => {
             <Skeleton className={cn("absolute inset-0")} />
           ) : (
             <Image
-              src={data?.blog?.imageUrl || ""}
+            // change the default image later
+              src={data?.blog?.imageUrl || "/images/default_banner.jpeg"}
               alt={data?.blog?.id || "untitled"}
               className={cn("object-cover rounded-2xl")}
               fill

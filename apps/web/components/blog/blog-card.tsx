@@ -46,7 +46,9 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
 
 
   return (
-    <div onClick={() => router.push(`/write/${blog.id}`)} className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}>
+    <div onClick={() => {
+      blog.status === "DRAFT" ? router.push(`/write/${blog.id}`) : router.push(`/blog/${blog.id}`)
+    }} className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}>
       <div className={`${isColumn ? "w-full aspect-video" : "w-40 h-40 aspect-square"} relative `}>
         <Image
           src={blog.imageUrl ? blog.imageUrl : "/images/default_banner.jpeg"}
