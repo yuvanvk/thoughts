@@ -13,6 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Eye, Loader2, Save, Send, Trash, X } from "lucide-react";
 import { motion } from "motion/react";
+import { Skeleton } from "@workspace/ui/components/skeleton";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
@@ -20,7 +21,6 @@ import Italic from "@tiptap/extension-italic";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import Heading from "@tiptap/extension-heading";
-import { Skeleton } from "@workspace/ui/components/skeleton";
 import Image from "next/image";
 
 export const BlogWriting = () => {
@@ -32,11 +32,12 @@ export const BlogWriting = () => {
 
   const router = useRouter();
   const [publicUrl, setPublicUrl] = useState<string | null>(data?.blog.imageUrl || null,);
-  const [title, setTitle] = useState<string | null>(data?.blog.title || null);
+  const [title, setTitle] = useState<string>(data?.blog.title || "");
   const [isImageUploaded, setIsImageUploaded] = useState(data?.blog.imageUrl ? true : false);
 
   const publishMutation = useMutation(trpc.blog.publish.mutationOptions());
-  const deleteMutation = useMutation(trpc.blog.deleteDraft.mutationOptions())
+  const deleteMutation = useMutation(trpc.blog.deleteDraft.mutationOptions());
+  const saveMutation = useMutation(trpc.blog.save.mutationOptions());
 
   const editor = useEditor({
     extensions: [
@@ -74,8 +75,35 @@ export const BlogWriting = () => {
     try {
       const response = await deleteMutation.mutateAsync({ id } as { id: string });
       toast.success(response.messsage)
-      router.push("/home")
+      router.push("/drafts")
       return
+    } catch (error: any) {
+      toast.error(`${error.message}`)
+    }
+  }
+
+  const handleSave = async () => {
+    try {
+      if(!id) {
+        toast.error("No valid id found")
+        return
+      }
+      
+      if(!title) {
+        toast.error("Please provide a title")
+        return
+      }
+      console.log(title, editor.getHTML(), id, publicUrl);
+      
+
+      const response = await saveMutation.mutateAsync({ 
+        id: id as string,
+        title,
+        content: editor.getHTML(),
+        imageUrl: publicUrl,
+      })
+
+      toast.success(response.message)
     } catch (error: any) {
       toast.error(`${error.message}`)
     }
@@ -115,6 +143,8 @@ export const BlogWriting = () => {
       toast.error(`${error}`);
     }
   };
+
+  
 
   return (
     <EditorContext.Provider value={providerValue}>
@@ -172,7 +202,7 @@ export const BlogWriting = () => {
             className={cn(
               "w-full border-none! dark:bg-neutral-900! my-4 !text-4xl py-10 px-0 focus-visible:ring-0 shadow-none",
             )}
-            value={data?.blog.title || ""}
+            value={title}
             type="text"
             placeholder="Your story title"
           />
@@ -206,6 +236,7 @@ export const BlogWriting = () => {
           </div>
 
           <Button
+            onClick={handleSave}
             size={"sm"}
             className={cn(
               "bg-transparent text-black dark:text-white",

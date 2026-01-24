@@ -289,6 +289,49 @@ export const blogRouter = router({
         });
   
         return { messsage: "Deleted draft successfully", status: 200 }
+      } catch (error) {  
+        if(error instanceof TRPCError) {
+          throw error
+        }
+
+        throw new TRPCError({
+          code: "BAD_GATEWAY",
+          message: "Something went wrong"
+        })
+      }
+    }),
+    save: publicProcedure
+    .input(z.object({
+      id: z.string(),
+      title: z.string(),
+      content: z.string(),
+      imageUrl: z.string().nullable(),
+      
+    }))
+    .mutation(async (opts) => {
+      try {
+        if(!opts.ctx.session?.session) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Please login to proceed"
+          })
+        }
+  
+        const { id, title, content, imageUrl } = opts.input;
+        
+        const draft = await prisma.blog.update({
+          where: {
+            id,
+          },
+          data: {
+            title,
+            description: content,
+            imageUrl,
+            updatedAt: new Date()
+          }
+        })
+
+        return { message: "Saved", status: 200 }
       } catch (error) {
         if(error instanceof TRPCError) {
           throw error
