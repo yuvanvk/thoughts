@@ -74,7 +74,7 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
               {blog.user?.name}
             </span>
           </div>
-          <div className="text-[10px] font-light font-mono text-gray-300">
+          <div className="text-[10px] font-light font-mono text-neutral-700 dark:text-gray-300">
             {formatDate(blog.createdAt)}
           </div>
         </div>
