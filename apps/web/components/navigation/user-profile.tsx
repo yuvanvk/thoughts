@@ -46,7 +46,7 @@ export const UserProfile = () => {
             exit={{ x: 20, opacity: 0 }}
             transition={{ duration: 0.2 }}
             className={cn(
-              "absolute inset-0 flex flex-col h-screen z-50",
+              "absolute inset-0 flex flex-col h-screen z-[100]",
               "bg-white dark:bg-neutral-900"
             )}
           >

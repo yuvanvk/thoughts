@@ -51,7 +51,7 @@ export const Sidebar = () => {
           })}
         </div>
       ) : (
-        <div className="px-6 py-4 bg-neutral-800 flex items-center justify-between md:hidden absolute w-full -bottom-10 z-50">
+        <div className="px-6 py-4 bg-neutral-800 flex items-center justify-between md:hidden absolute w-full -bottom-10 z-10">
           {SidebarContent.map((s) => {
             const Icon = s.icon;
             return (

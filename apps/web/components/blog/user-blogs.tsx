@@ -22,7 +22,6 @@ export const UserBlogs = () => {
   }
 
   return (
-    <ScrollArea className={cn("w-full pb-5 px-4 h-[90vh]")}>
       <div>
         <div className={cn("flex flex-col gap-y-1")}>
           <div>
@@ -48,6 +47,5 @@ export const UserBlogs = () => {
           </div>
         </div>
       </div>
-    </ScrollArea>
   );
 };
