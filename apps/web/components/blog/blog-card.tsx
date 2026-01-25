@@ -10,9 +10,8 @@ import { PostStatus } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-
 interface BlogCardProps {
-  variant?: "row" | "col",
+  variant?: "row" | "col";
   blog: {
     id: string;
     title: string;
@@ -24,32 +23,35 @@ interface BlogCardProps {
     user?: {
       name: string;
       image: string | null;
-    }
-  }
-
+    };
+  };
 }
 
 export const BlogCard = ({ variant, blog }: BlogCardProps) => {
   const isColumn = variant === "col";
   const router = useRouter();
 
-
   function formatDate(date: Date | string) {
-
-    const d = (date instanceof Date) ? date : new Date(date)
+    const d = date instanceof Date ? date : new Date(date);
     return new Intl.DateTimeFormat("en-US", {
       month: "short",
       day: "numeric",
-      year: "numeric"
-    }).format(d)
+      year: "numeric",
+    }).format(d);
   }
 
-
   return (
-    <div onClick={() => {
-      blog.status === "DRAFT" ? router.push(`/write/${blog.id}`) : router.push(`/blog/${blog.id}`)
-    }} className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}>
-      <div className={`${isColumn ? "w-full aspect-video" : "w-40 h-40 aspect-square"} relative `}>
+    <div
+      onClick={() => {
+        blog.status === "DRAFT"
+          ? router.push(`/write/${blog.id}`)
+          : router.push(`/blog/${blog.id}`);
+      }}
+      className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}
+    >
+      <div
+        className={`${isColumn ? "w-full aspect-video" : "w-40 h-40 aspect-square"} relative `}
+      >
         <Image
           src={blog.imageUrl ? blog.imageUrl : "/images/default_banner.jpeg"}
           alt={blog.imageUrl ? blog.imageUrl : "default_image"}
@@ -57,7 +59,9 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
           fill
         />
       </div>
-      <div className={`flex flex-col justify-between ${isColumn ? "gap-y-5 mt-3" : "gap-y-1"} p-4`}>
+      <div
+        className={`flex flex-col justify-between ${isColumn ? "gap-y-5 mt-3" : "gap-y-1"} p-4`}
+      >
         <div>
           <div className="font-medium text-sm font-sans tracking-tight">
             {blog.title || "Title"}

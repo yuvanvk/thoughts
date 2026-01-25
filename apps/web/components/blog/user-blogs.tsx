@@ -33,7 +33,7 @@ export const UserBlogs = () => {
             )}
 
             {!isFetching && data && data?.blogs.length > 0 && (
-              <div className={cn("grid grid-cols-2 gap-4  mt-2")}>
+              <div className={cn("grid gird-cols-1 md:grid-cols-2 gap-4  mt-2")}>
                 {data?.blogs.map((b) => (
                   <BlogCard key={b.id} variant="col" blog={b} />
                 ))}

@@ -13,7 +13,7 @@ export const Drafts = () => {
   const trpc = useTRPC();
   const router = useRouter();
   const { isFetching, isError, data } = useQuery(trpc.blog.getDrafts.queryOptions());
-
+  
   if (isError) {
     toast.error(data?.message);
     router.push("/home");
@@ -45,8 +45,8 @@ export const Drafts = () => {
               </div>
             )}
 
-            {!isFetching && !data && (
-              <div className="text-sm font-sans text-center">
+            {!isFetching && !data?.drafts.length && (
+              <div className="text-sm font-sans text-center mt-5">
                 No drafts found
               </div>
             )}

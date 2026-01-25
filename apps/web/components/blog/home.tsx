@@ -13,7 +13,7 @@ export const Home = () => {
   const trpc = useTRPC();
 
   const { isFetching, isError, data } = useQuery(trpc.blog.getBlogs.queryOptions());
-
+  
   if (isError) {
     toast.error(data?.message)
     return <div className={cn("flex justify-center items-center")}>

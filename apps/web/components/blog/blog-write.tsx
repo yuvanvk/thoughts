@@ -212,8 +212,8 @@ export const BlogWriting = () => {
         <Editor />
         <div
           className={cn(
-            "flex items-center justify-between fixed bottom-3 left-1/2 -translate-x-1/2",
-            "max-w-lg w-full bg-neutral-100 dark:bg-neutral-800 px-2 py-2 rounded-full shadow",
+            "flex items-center justify-between fixed bottom-18 md:bottom-3 left-1/2 -translate-x-1/2",
+            "max-w-[400px] md:max-w-lg w-full bg-neutral-100 dark:bg-neutral-800 px-2 py-2 rounded-full shadow",
           )}
         >
           <div className={cn("flex items-center gap-x-1")}>
