@@ -9,6 +9,10 @@ import { PostStatus } from "@prisma/client";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Bookmark } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { useTRPC } from "@/lib/trpc/trpc";
+import { toast } from "sonner";
 
 interface BlogCardProps {
   variant?: "row" | "col";
@@ -30,6 +34,8 @@ interface BlogCardProps {
 export const BlogCard = ({ variant, blog }: BlogCardProps) => {
   const isColumn = variant === "col";
   const router = useRouter();
+  const trpc = useTRPC();
+  const bookmarkMutation = useMutation(trpc.blog.addToBookmark.mutationOptions());
 
   function formatDate(date: Date | string) {
     const d = date instanceof Date ? date : new Date(date);
@@ -38,6 +44,19 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
       day: "numeric",
       year: "numeric",
     }).format(d);
+  }
+
+
+  const handleAddToBookmark = async (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    e.stopPropagation();
+    try {
+      const response = await bookmarkMutation.mutateAsync({
+        id: blog.id
+      })
+      toast.success(response.message)
+    } catch (error) {
+      toast.error(`${error}`)
+    }
   }
 
   return (
@@ -60,7 +79,7 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
         />
       </div>
       <div
-        className={`flex flex-col justify-between ${isColumn ? "gap-y-5 mt-3" : "gap-y-1"} p-4`}
+        className={`flex flex-col justify-between ${isColumn ? "gap-y-5 mt-3" : "gap-y-1"} p-4 relative`}
       >
         <div>
           <div className="font-medium text-sm font-sans tracking-tight">
@@ -70,6 +89,7 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
             {blog.description || "Write..."}
           </div>
         </div>
+        <Bookmark onClick={(e) => handleAddToBookmark(e)} size={15} className="absolute right-3 top-5" />
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-2">
             <Avatar className="w-5 h-5">
