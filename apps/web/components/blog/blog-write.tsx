@@ -11,9 +11,10 @@ import { useEditor, EditorContext } from "@tiptap/react";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Eye, Loader2, Save, Send, Trash, X } from "lucide-react";
-import { motion } from "motion/react";
+import { Loader2, Plus, Save, Send, Trash, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { Skeleton } from "@workspace/ui/components/skeleton";
+import { Tags } from "@/config/config";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
@@ -28,12 +29,20 @@ export const BlogWriting = () => {
   const params = useParams();
   const { id } = params;
 
-  const { isFetching, isError, data } = useQuery(trpc.blog.get.queryOptions({ id } as { id: string }));
+  const { isFetching, isError, data } = useQuery(
+    trpc.blog.get.queryOptions({ id } as { id: string })
+  );
 
   const router = useRouter();
-  const [publicUrl, setPublicUrl] = useState<string | null>(data?.blog.imageUrl || null,);
+  const [publicUrl, setPublicUrl] = useState<string | null>(
+    data?.blog.imageUrl || null
+  );
   const [title, setTitle] = useState<string>(data?.blog.title || "");
-  const [isImageUploaded, setIsImageUploaded] = useState(data?.blog.imageUrl ? true : false);
+  const [isImageUploaded, setIsImageUploaded] = useState(
+    data?.blog.imageUrl ? true : false
+  );
+  const [tags, setTags] = useState<string[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
 
   const publishMutation = useMutation(trpc.blog.publish.mutationOptions());
   const deleteMutation = useMutation(trpc.blog.deleteDraft.mutationOptions());
@@ -73,41 +82,42 @@ export const BlogWriting = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await deleteMutation.mutateAsync({ id } as { id: string });
-      toast.success(response.messsage)
-      router.push("/drafts")
-      return
+      const response = await deleteMutation.mutateAsync({ id } as {
+        id: string;
+      });
+      toast.success(response.messsage);
+      router.push("/drafts");
+      return;
     } catch (error: any) {
-      toast.error(`${error.message}`)
+      toast.error(`${error.message}`);
     }
-  }
+  };
 
   const handleSave = async () => {
     try {
-      if(!id) {
-        toast.error("No valid id found")
-        return
+      if (!id) {
+        toast.error("No valid id found");
+        return;
       }
-      
-      if(!title) {
-        toast.error("Please provide a title")
-        return
+
+      if (!title) {
+        toast.error("Please provide a title");
+        return;
       }
       console.log(title, editor.getHTML(), id, publicUrl);
-      
 
-      const response = await saveMutation.mutateAsync({ 
+      const response = await saveMutation.mutateAsync({
         id: id as string,
         title,
         content: editor.getHTML(),
         imageUrl: publicUrl,
-      })
+      });
 
-      toast.success(response.message)
+      toast.success(response.message);
     } catch (error: any) {
-      toast.error(`${error.message}`)
+      toast.error(`${error.message}`);
     }
-  }
+  };
 
   const handlePublish = async () => {
     try {
@@ -144,6 +154,18 @@ export const BlogWriting = () => {
     }
   };
 
+  const handleSelect = (t: string) => {
+    if (tags.includes(t)) {
+      return;
+    }
+    setTags((prev) => [...prev, t]);
+  };
+
+  const handleRemove = (index: number) => {
+    const updated = [...tags];
+    const filterd = updated.filter((x, idx) => idx != index);
+    setTags(filterd);
+  };
 
 
   return (
@@ -177,7 +199,7 @@ export const BlogWriting = () => {
                 />
                 <div
                   className={cn(
-                    "p-1 bg-rose-500 absolute top-2 right-4 rounded-[9px]",
+                    "p-1 bg-rose-500 absolute top-2 right-4 rounded-[9px]"
                   )}
                 >
                   <X onClick={() => setIsImageUploaded(false)} />
@@ -200,7 +222,7 @@ export const BlogWriting = () => {
           <Input
             onChange={(e) => setTitle(e.target.value)}
             className={cn(
-              "w-full border-none! dark:bg-neutral-900! my-4 !text-4xl py-10 px-0 focus-visible:ring-0 shadow-none",
+              "w-full border-none! dark:bg-neutral-900! my-4 !text-4xl py-10 px-0 focus-visible:ring-0 shadow-none"
             )}
             value={title}
             type="text"
@@ -208,76 +230,153 @@ export const BlogWriting = () => {
           />
         </div>
         <Editor />
-        <div
-          className={cn(
-            "flex items-center justify-between fixed bottom-18 md:bottom-3 left-1/2 -translate-x-1/2",
-            "max-w-[400px] md:max-w-lg w-full bg-neutral-100 dark:bg-neutral-800 px-2 py-2 rounded-full shadow",
-          )}
-        >
-          <div className={cn("flex items-center gap-x-1")}>
-            <Button
-              onClick={handleDelete}
-              className={cn(
-                "rounded-full bg-rose-500 text-white cursor-pointer px-3! py-4!",
-                "hover:bg-rose-600 border border-rose-300",
-              )}
-              size={"sm"}
-            >
-              {publishMutation.isPending ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                <>
-                  <Trash />
-                  <span>Delete</span>
-                </>
-              )}
-            </Button>
-            <div className="w-px h-7 bg-neutral-300 dark:bg-neutral-700 ml-1" />
-          </div>
+        <div className="max-w-[400px] md:max-w-lg fixed bottom-18 md:bottom-3 left-1/2 -translate-x-1/2 w-full">
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                initial={{
+                  y: 10,
+                  opacity: 0,
+                }}
+                animate={{
+                  y: 0,
+                  opacity: 1,
+                }}
+                exit={{
+                  y: 50,
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 0.2,
+                  ease: "backInOut"
+                }}
+                className="border-b border-neutral-700 absolute bottom-full left-0 w-full -z-50"
+              >
+                <div className="flex items-center gap-x-2 py-3 px-3 bg-neutral-800 rounded-t-[10px]">
+                  {Tags.map((t, idx) => {
+                    return (
+                      <Button
+                        key={idx}
+                        size={"sm"}
+                        onClick={() => handleSelect(t)}
+                        className={cn(
+                          "text-[10px] px-2 py-0",
+                          "bg-neutral-600 hover:bg-neutral-700 text-neutral-200",
+                          "border border-dashed rounded-[9px] cursor-pointer"
+                        )}
+                      >
+                        {t}
+                      </Button>
+                    );
+                  })}
+                </div>
+                <div
+                  className={cn(
+                    "flex items-center gap-x-2 bg-neutral-800 py-2 px-3"
+                  )}
+                >
+                  {tags.map((t, idx) => (
+                    <div
+                      key={t}
+                      className={cn(
+                        "flex items-center gap-x-1",
+                        "bg-neutral-700 px-3 py-1 text-[10px] rounded-[10px]"
+                      )}
+                    >
+                      {t}
+                      <X
+                        onClick={() => handleRemove(idx)}
+                        size={8}
+                        className="cursor-pointer"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <Button
-            onClick={handleSave}
-            size={"sm"}
+          <motion.div
+          layoutId="toolbar"
+          animate={{
+            borderRadius: open ? "0px 0px 9px 9px" : "9999px"
+          }}
+          transition={{
+            duration: 0.3,
+            ease: "easeOut"
+          }}
             className={cn(
-              "bg-transparent text-black dark:text-white",
-              "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none",
+              "flex items-center justify-between",
+              "w-full bg-neutral-100 dark:bg-neutral-800 px-2 py-2 shadow",
+              "transition-all z-50"
             )}
           >
-            <Save />
-            Save
-          </Button>
+            <div className={cn("flex items-center gap-x-1")}>
+              <Button
+                onClick={handleDelete}
+                className={cn(
+                  "rounded-full bg-rose-500 text-white cursor-pointer px-3! py-4!",
+                  "hover:bg-rose-600 border border-rose-300"
+                )}
+                size={"sm"}
+              >
+                {publishMutation.isPending ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <>
+                    <Trash />
+                    <span>Delete</span>
+                  </>
+                )}
+              </Button>
+              <div className="w-px h-7 bg-neutral-300 dark:bg-neutral-700 ml-1" />
+            </div>
 
-          <Button
-            size={"sm"}
-            className={cn(
-              "bg-transparent text-black dark:text-white",
-              "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none",
-            )}
-          >
-            <Eye />
-            Preview
-          </Button>
-
-          <div className={cn("flex items-center gap-x-1")}>
-            <div className="w-px h-7 bg-neutral-300 dark:bg-neutral-700 mr-1" />
             <Button
-              onClick={handlePublish}
-              className={cn(
-                "rounded-full bg-lime-500 text-black cursor-pointer px-3! py-4!",
-                "hover:bg-lime-600 border border-lime-300",
-              )}
+              onClick={handleSave}
               size={"sm"}
-            >
-              {publishMutation.isPending ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                <>
-                  <Send />
-                  <span>Publish</span>
-                </>
+              className={cn(
+                "bg-transparent text-black dark:text-white",
+                "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none"
               )}
+            >
+              <Save />
+              Save
             </Button>
-          </div>
+
+            <Button
+              size={"sm"}
+              onClick={() => setOpen((c) => !c)}
+              className={cn(
+                "bg-transparent text-black dark:text-white",
+                "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none"
+              )}
+            >
+              {!open ? <Plus /> : <X />}
+              Add Tag
+            </Button>
+
+            <div className={cn("flex items-center gap-x-1")}>
+              <div className="w-px h-7 bg-neutral-300 dark:bg-neutral-700 mr-1" />
+              <Button
+                onClick={handlePublish}
+                className={cn(
+                  "rounded-full bg-lime-500 text-black cursor-pointer px-3! py-4!",
+                  "hover:bg-lime-600 border border-lime-300"
+                )}
+                size={"sm"}
+              >
+                {publishMutation.isPending ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <>
+                    <Send />
+                    <span>Publish</span>
+                  </>
+                )}
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </motion.div>
     </EditorContext.Provider>

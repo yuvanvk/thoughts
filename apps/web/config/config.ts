@@ -67,3 +67,5 @@ export const SidebarContent = [
         route: "/myblogs"
     },
 ]
+
+export const Tags = ["Engineering", "Tech", "Design", "Software", "Tools"]

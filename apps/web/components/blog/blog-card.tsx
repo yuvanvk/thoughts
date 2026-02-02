@@ -76,7 +76,7 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
               <AvatarImage src={"https://github.com/shadcn.png"} />
               <AvatarFallback>AV</AvatarFallback>
             </Avatar>
-            <span className=" text-[10px] font-medium uppercase font-mono text-gray-300">
+            <span className=" text-[10px] font-medium uppercase font-mono text-neutral-800 dark:text-gray-300">
               {blog.user?.name}
             </span>
           </div>
