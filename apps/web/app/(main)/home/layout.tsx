@@ -20,7 +20,7 @@ export default function HomeLayout({
         </ScrollArea>
         
       </Container>
-      <Container className="hidden lg:block lg:flex-1 p-0 border-r space-y-2 h-full">
+      <Container className="hidden lg:block lg:flex-col lg:flex-1 p-0 border-r space-y-2 h-full relative">
         <Search />
         <Categories />
       </Container>

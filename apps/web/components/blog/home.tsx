@@ -1,7 +1,6 @@
 "use client";
 
 import { BlogCard } from "./blog-card";
-import { PersonalBrand } from "@/components/branding/personal-brand";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@workspace/ui/components/skeleton";

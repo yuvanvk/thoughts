@@ -3,11 +3,9 @@
 import { Input } from "@workspace/ui/components/input";
 import { cn } from "@workspace/ui/lib/utils";
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
-export const Searchbar = () => {
-  const [query, setQuery] = useState("");
-  const [open, setOpen] = useState(false);
+export const Searchbar = ({ setQuery, setOpen }: { setQuery: Dispatch<SetStateAction<string>>, setOpen: Dispatch<SetStateAction<boolean>>}) => {
 
   return (
     <div className="flex-1">

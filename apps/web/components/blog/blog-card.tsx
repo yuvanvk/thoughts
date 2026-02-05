@@ -94,7 +94,7 @@ export const BlogCard = ({
       className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}
     >
       <div
-        className={`${isColumn ? "w-full aspect-video" : "w-40 h-40 aspect-square"} relative `}
+        className={`${isColumn ? "w-full aspect-video" : "w-30 h-30 aspect-square"} relative `}
       >
         <Image
           src={blog.imageUrl ? blog.imageUrl : "/images/default_banner.jpeg"}
@@ -106,7 +106,7 @@ export const BlogCard = ({
       <div
         className={`flex flex-col justify-between ${isColumn ? "gap-y-5 mt-3" : "gap-y-1"} p-4 relative`}
       >
-        <div>
+        <div className="flex flex-col items-start">
           <div className="font-medium text-sm font-sans tracking-tight">
             {blog.title || "Title"}
           </div>
@@ -119,7 +119,7 @@ export const BlogCard = ({
           size={15}
           fill={`${isBookmark && "yellow"}`}
           className={cn(
-            "absolute right-3 top-5",
+            `absolute ${isColumn ? "right-3 top-5" : "-right-12 top-4"}`,
             `${isBookmark ? "text-yellow-500" : "text-white"}`,
           )}
         />
