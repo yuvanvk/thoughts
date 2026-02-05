@@ -1,6 +1,5 @@
 "use client";
 
-import { ScrollArea } from "@workspace/ui/components/scroll-area";
 import { BlogCard } from "./blog-card";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { useQuery } from "@tanstack/react-query";
@@ -34,7 +33,7 @@ export const UserBlogs = () => {
             {!isFetching && data && data?.blogs.length > 0 && (
               <div className={cn("grid gird-cols-1 md:grid-cols-2 gap-4  mt-2")}>
                 {data?.blogs.map((b) => (
-                  <BlogCard key={b.id} variant="col" blog={b} />
+                  <BlogCard deleteable={true} key={b.id} variant="col" blog={b} />
                 ))}
               </div>
             )}

@@ -9,16 +9,17 @@ import { PostStatus } from "@prisma/client";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Bookmark } from "lucide-react";
+import { Bookmark, Trash2 } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { toast } from "sonner";
 import { cn } from "@workspace/ui/lib/utils";
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 
 interface BlogCardProps {
   variant?: "row" | "col";
   bookmark?: boolean;
+  deleteable?: boolean;
   blog: {
     id: string;
     title: string;
@@ -37,6 +38,7 @@ interface BlogCardProps {
 export const BlogCard = ({
   variant,
   blog,
+  deleteable,
   bookmark = false,
 }: BlogCardProps) => {
   const [isBookmark, setIsBookmark] = useState(bookmark);
@@ -52,6 +54,8 @@ export const BlogCard = ({
     trpc.blog.removeBookMark.mutationOptions(),
   );
 
+  const deleteBlogMutation = useMutation(trpc.blog.deleteBlog.mutationOptions())
+
   function formatDate(date: Date | string) {
     const d = date instanceof Date ? date : new Date(date);
     return new Intl.DateTimeFormat("en-US", {
@@ -61,9 +65,7 @@ export const BlogCard = ({
     }).format(d);
   }
 
-  const handleBookmark = async (
-    e: React.MouseEvent<SVGSVGElement, MouseEvent>,
-  ) => {
+  const handleBookmark = async (e: MouseEvent<SVGSVGElement>) => {
     e.stopPropagation();
     try {
       if (isBookmark) {
@@ -84,6 +86,21 @@ export const BlogCard = ({
     }
   };
 
+  const handleDelete = async (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    console.log("triggered");
+    
+    try {
+      const response = await deleteBlogMutation.mutateAsync({
+        id: blog.id,
+      });
+
+      toast.success(response.message);
+    } catch (error: any) {
+      toast.error(`${error.message}`);
+    }
+  };
+
   return (
     <div
       onClick={() => {
@@ -91,8 +108,18 @@ export const BlogCard = ({
           ? router.push(`/write/${blog.id}`)
           : router.push(`/blog/${blog.id}`);
       }}
-      className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow`}
+      className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow relative`}
     >
+      {deleteable && (
+        <div
+          onClick={(e) => handleDelete(e)}
+          className={cn(
+            "absolute top-2 right-2 z-10 bg-red-500 px-1 py-1 rounded-[8px]",
+          )}
+        >
+          <Trash2 size={15} />
+        </div>
+      )}
       <div
         className={`${isColumn ? "w-full aspect-video" : "w-30 h-30 aspect-square"} relative `}
       >
