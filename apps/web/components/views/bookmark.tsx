@@ -39,7 +39,7 @@ export const BookMark = ({ }) => {
           className={cn("grid grid-cols-1 md:grid-cols-2 gap-4  mt-2")}
         >
           {data?.userBookmarks.map((b) => (
-            <BlogCard key={b.id} variant="col" blog={b.blog} />
+            <BlogCard key={b.id} variant="col" bookmark={true} blog={b.blog} />
           ))}
         </div>
       )}

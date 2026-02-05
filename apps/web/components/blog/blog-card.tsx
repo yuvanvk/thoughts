@@ -13,9 +13,12 @@ import { Bookmark } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { toast } from "sonner";
+import { cn } from "@workspace/ui/lib/utils";
+import { useState } from "react";
 
 interface BlogCardProps {
   variant?: "row" | "col";
+  bookmark?: boolean;
   blog: {
     id: string;
     title: string;
@@ -31,11 +34,23 @@ interface BlogCardProps {
   };
 }
 
-export const BlogCard = ({ variant, blog }: BlogCardProps) => {
+export const BlogCard = ({
+  variant,
+  blog,
+  bookmark = false,
+}: BlogCardProps) => {
+  const [isBookmark, setIsBookmark] = useState(bookmark);
+
   const isColumn = variant === "col";
   const router = useRouter();
   const trpc = useTRPC();
-  const bookmarkMutation = useMutation(trpc.blog.addToBookmark.mutationOptions());
+
+  const bookmarkMutation = useMutation(
+    trpc.blog.addToBookmark.mutationOptions(),
+  );
+  const removeFromBookmarkMutation = useMutation(
+    trpc.blog.removeBookMark.mutationOptions(),
+  );
 
   function formatDate(date: Date | string) {
     const d = date instanceof Date ? date : new Date(date);
@@ -46,18 +61,28 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
     }).format(d);
   }
 
-
-  const handleAddToBookmark = async (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+  const handleBookmark = async (
+    e: React.MouseEvent<SVGSVGElement, MouseEvent>,
+  ) => {
     e.stopPropagation();
     try {
-      const response = await bookmarkMutation.mutateAsync({
-        id: blog.id
-      })
-      toast.success(response.message)
-    } catch (error) {
-      toast.error(`${error}`)
+      if (isBookmark) {
+        const response = await removeFromBookmarkMutation.mutateAsync({
+          id: blog.id,
+        });
+        setIsBookmark(false);
+        toast.success(response.message);
+      } else {
+        const response = await bookmarkMutation.mutateAsync({
+          id: blog.id,
+        });
+        setIsBookmark(true);
+        toast.success(response.message);
+      }
+    } catch (error: any) {
+      toast.error(`${error.message}`);
     }
-  }
+  };
 
   return (
     <div
@@ -89,7 +114,15 @@ export const BlogCard = ({ variant, blog }: BlogCardProps) => {
             {blog.description || "Write..."}
           </div>
         </div>
-        <Bookmark onClick={(e) => handleAddToBookmark(e)} size={15} className="absolute right-3 top-5" />
+        <Bookmark
+          onClick={(e) => handleBookmark(e)}
+          size={15}
+          fill={`${isBookmark && "yellow"}`}
+          className={cn(
+            "absolute right-3 top-5",
+            `${isBookmark ? "text-yellow-500" : "text-white"}`,
+          )}
+        />
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-2">
             <Avatar className="w-5 h-5">

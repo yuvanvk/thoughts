@@ -31,7 +31,7 @@ export const Home = () => {
         {isFetching && <Skeleton className={cn("h-96 w-full")} />}
 
         {data?.blogs?.[0] && (
-          <BlogCard key={data.blogs[0].id} blog={data.blogs[0]} variant="col" />
+          <BlogCard key={data.blogs[0].id} bookmark={false} blog={data.blogs[0]} variant="col" />
         )}
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
