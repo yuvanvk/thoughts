@@ -2,13 +2,12 @@
 
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
-import { ArrowRight, Asterisk } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useTRPC } from "@/lib/trpc/trpc";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 import { Card, CardContent } from "@workspace/ui/components/card";
 
@@ -23,17 +22,7 @@ export const Login = () => {
   const trpc = useTRPC();
   const router = useRouter();
 
-  const login = useMutation(
-    trpc.auth.login.mutationOptions({
-      onSuccess: () => {
-        toast.success("Logged In successfully");
-        router.push("/home");
-      },
-      onError: () => {
-        toast.error("Something went wrong. Please try again later");
-      },
-    })
-  );
+  const login = useMutation(trpc.auth.login.mutationOptions());
 
   return (
     <div className="py-40">
@@ -99,12 +88,32 @@ export const Login = () => {
                   }
 
                   if (reponse.status === 200) {
-                    await authClient.signIn.email({
-                      email: loginDetails.email,
-                      password: loginDetails.password,
-                      rememberMe: true,
-                      callbackURL: "http://localhost:3000/home",
-                    });
+                    await authClient.signIn.email(
+                      {
+                        email: loginDetails.email,
+                        password: loginDetails.password,
+                        rememberMe: true,
+                        callbackURL: "http://localhost:3000/home",
+                      },
+                      {
+                        onError: async (ctx) => {
+                          if (ctx.error.status === 403) {
+                            toast.error("Please verify your email address");
+
+                            await authClient.sendVerificationEmail(
+                              {
+                                email: loginDetails.email,
+                              },
+                              {
+                                onSuccess: () => {
+                                  toast.success("Verification email sent");
+                                },
+                              },
+                            );
+                          }
+                        },
+                      },
+                    );
                   }
                 }}
                 className="px-2 py-2 flex justify-center items-center gap-x-2 bg-[#121212] dark:bg-white dark:text-black  mt-4 cursor-pointer w-full border rounded-[18px]"
@@ -118,7 +127,15 @@ export const Login = () => {
           </CardContent>
         </Card>
 
-        <p className="text-neutral-400 text-sm text-center font-medium font-sans mt-10">Don't have an account? <span onClick={() => router.push("/signup")} className="hover:underline hover:text-white cursor-pointer">Create one!</span></p>
+        <p className="text-neutral-400 text-sm text-center font-medium font-sans mt-10">
+          Don't have an account?{" "}
+          <span
+            onClick={() => router.push("/signup")}
+            className="hover:underline hover:text-white cursor-pointer"
+          >
+            Create one!
+          </span>
+        </p>
       </div>
     </div>
   );
