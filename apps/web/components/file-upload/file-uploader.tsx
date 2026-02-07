@@ -8,19 +8,23 @@ import { Input } from "@workspace/ui/components/input";
 import { ImagePlus, Loader2Icon, Upload, X } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { uploadBannerImage } from "@/lib/supabase/upload-banner-images";
+import { uploadImageToBucket } from "@/lib/supabase/upload-images";
 
 interface FileUploaderProps {
   accept: string;
   maxMBSize: number;
   previewUrl?: string | null;
   onFileUpload: Dispatch<SetStateAction<string | null>>;
+  className?: string;
+  type: string;
 }
 
 export const FileUploader = ({
   accept = "image/*",
   maxMBSize = 5,
   onFileUpload,
+  type,
+  className
 }: FileUploaderProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -56,7 +60,7 @@ export const FileUploader = ({
     setFile(selectedFile);
   };
 
-  const uploadBanner = async (file: File) => {
+  const uploadImage = async (file: File) => {
     if (!file) {
       return;
     }
@@ -74,7 +78,7 @@ export const FileUploader = ({
         return;
       }
 
-      const publicUrl = await uploadBannerImage(file, data.preSignedUrl!);
+      const publicUrl = await uploadImageToBucket(file, data.preSignedUrl!, type);
       onFileUpload(publicUrl);
       toast.success("Uploaded successfully");
     } catch (error) {
@@ -100,7 +104,7 @@ export const FileUploader = ({
         className={cn(
           "group h-64 bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center justify-center space-y-2 w-full border-2 border-dashed cursor-pointer rounded-2xl relative",
           "border-2 border-dashed hover:border-neutral-300 dark:hover:border-neutral-700",
-          "transition-all duration-200"
+          "transition-all duration-200",className
         )}
       >
         <div
@@ -118,31 +122,30 @@ export const FileUploader = ({
           />
         </div>
         <p className={cn("text-[12px] font-sans text-neutral-400")}>
-          Add a cover Image
+          Add a {type} Image
         </p>
         {file && file.type.startsWith("image/") && previewUrl && (
           <>
             <img
               src={previewUrl}
               alt="preview"
-              className="absolute inset-0 h-64 w-full object-cover object-center rounded-2xl"
+              className={cn("absolute inset-0 h-64 w-full object-cover object-center rounded-2xl", className)}
             />
-            <div className="flex items-center gap-x-2 absolute z-10 top-2 right-2">
+            <div className="flex items-center gap-x-2 absolute z-10 -top-5 -right-20">
               <Button
                 disabled={isUploading}
                 onClick={(e) => {
                   e.stopPropagation();
-                  uploadBanner(file);
+                  uploadImage(file);
                 }}
-                className="!bg-blue-500 rounded-[10px] cursor-pointer"
+                className="!bg-blue-500 rounded-full cursor-pointer size-10"
                 variant={"ghost"}
               >
                 {isUploading ? (
                   <Loader2Icon className="animate-spin" />
                 ) : (
                   <div className="flex items-center gap-x-2">
-                    Upload
-                    <Upload />
+                    <Upload size={20}/>
                   </div>
                 )}
               </Button>
@@ -156,10 +159,10 @@ export const FileUploader = ({
                     inputRef.current.value = "";
                   }
                 }}
-                className="!bg-rose-500 rounded-[10px] cursor-pointer"
+                className="!bg-rose-500 rounded-full cursor-pointer size-10"
                 variant={"destructive"}
               >
-                <X />
+                <X size={20}/>
               </Button>
             </div>
           </>
