@@ -25,32 +25,33 @@ export const searchRouter = router({
         const results = await prisma.blog.findMany({
           where: {
             OR: [
-                {
-                    title: {
-                        contains: query,
-                        mode: "insensitive"
-                    }
+              {
+                title: {
+                  contains: query,
+                  mode: "insensitive",
                 },
-                {
-                    description: {
-                        contains: query,
-                        mode: "insensitive"
-                    }
+              },
+              {
+                description: {
+                  contains: query,
+                  mode: "insensitive",
                 },
-            ] 
+              },
+            ],
+            status: "PUBLISHED",
           },
         });
 
-        return { message: "OK", status: 200, results }
+        return { message: "OK", status: 200, results };
       } catch (error) {
-        if(error instanceof TRPCError) {
-            throw error
+        if (error instanceof TRPCError) {
+          throw error;
         }
 
         throw new TRPCError({
-            code: "BAD_GATEWAY",
-            message: "Something went wrong"
-        })
+          code: "BAD_GATEWAY",
+          message: "Something went wrong",
+        });
       }
     }),
 });
