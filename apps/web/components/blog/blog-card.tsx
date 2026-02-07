@@ -88,7 +88,6 @@ export const BlogCard = ({
 
   const handleDelete = async (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    console.log("triggered");
     
     try {
       const response = await deleteBlogMutation.mutateAsync({
@@ -146,7 +145,7 @@ export const BlogCard = ({
           size={15}
           fill={`${isBookmark && "yellow"}`}
           className={cn(
-            `absolute ${isColumn ? "right-3 top-5" : "-right-12 top-4"}`,
+            `absolute ${isColumn ? "right-3 top-5" : "right-0 top-4"}`,
             `${isBookmark ? "text-yellow-500" : "text-white"}`,
           )}
         />

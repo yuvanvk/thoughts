@@ -21,7 +21,6 @@ export const UserProfile = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log("triggered");
       if (ref.current && !ref.current.contains(event.target as Node)) {
         setOpen(false);
       }

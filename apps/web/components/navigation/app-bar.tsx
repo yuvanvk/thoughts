@@ -16,7 +16,7 @@ export const Appbar = () => {
   const { id } = params;
   
   return (
-    <div className="w-full h-fit backdrop-blur-3xl border-b z-50">
+    <div className="w-full h-fit border-b z-50">
       <div className="w-full  mx-auto flex items-center justify-between px-3 xl:px-4 py-[12.9px]">
         <div className="flex items-center gap-x-2">
           {id && (

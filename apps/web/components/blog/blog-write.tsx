@@ -30,16 +30,16 @@ export const BlogWriting = () => {
   const { id } = params;
 
   const { isFetching, isError, data } = useQuery(
-    trpc.blog.get.queryOptions({ id } as { id: string })
+    trpc.blog.get.queryOptions({ id } as { id: string }),
   );
 
   const router = useRouter();
   const [publicUrl, setPublicUrl] = useState<string | null>(
-    data?.blog.imageUrl || null
+    data?.blog.imageUrl || null,
   );
   const [title, setTitle] = useState<string>(data?.blog.title || "");
   const [isImageUploaded, setIsImageUploaded] = useState(
-    data?.blog.imageUrl ? true : false
+    data?.blog.imageUrl ? true : false,
   );
   const [tags, setTags] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -167,7 +167,6 @@ export const BlogWriting = () => {
     setTags(filterd);
   };
 
-
   return (
     <EditorContext.Provider value={providerValue}>
       <motion.div
@@ -199,7 +198,7 @@ export const BlogWriting = () => {
                 />
                 <div
                   className={cn(
-                    "p-1 bg-rose-500 absolute top-2 right-4 rounded-[9px]"
+                    "p-1 bg-rose-500 absolute top-2 right-4 rounded-[9px]",
                   )}
                 >
                   <X onClick={() => setIsImageUploaded(false)} />
@@ -211,6 +210,7 @@ export const BlogWriting = () => {
 
         {!isImageUploaded && (
           <FileUploader
+            type="cover"
             accept="image/jpeg"
             maxMBSize={5}
             previewUrl={data?.blog.imageUrl}
@@ -222,7 +222,7 @@ export const BlogWriting = () => {
           <Input
             onChange={(e) => setTitle(e.target.value)}
             className={cn(
-              "w-full border-none! dark:bg-neutral-900! my-4 !text-4xl py-10 px-0 focus-visible:ring-0 shadow-none"
+              "w-full border-none! dark:bg-neutral-900! my-4 !text-4xl py-10 px-0 focus-visible:ring-0 shadow-none",
             )}
             value={title}
             type="text"
@@ -248,7 +248,7 @@ export const BlogWriting = () => {
                 }}
                 transition={{
                   duration: 0.2,
-                  ease: "backInOut"
+                  ease: "backInOut",
                 }}
                 className="border-b border-neutral-700 absolute bottom-full left-0 w-full -z-50"
               >
@@ -262,7 +262,7 @@ export const BlogWriting = () => {
                         className={cn(
                           "text-[10px] px-2 py-0",
                           "bg-neutral-600 hover:bg-neutral-700 text-neutral-200",
-                          "border border-dashed rounded-[9px] cursor-pointer"
+                          "border border-dashed rounded-[9px] cursor-pointer",
                         )}
                       >
                         {t}
@@ -272,7 +272,7 @@ export const BlogWriting = () => {
                 </div>
                 <div
                   className={cn(
-                    "flex items-center gap-x-2 bg-neutral-800 py-2 px-3"
+                    "flex items-center gap-x-2 bg-neutral-800 py-2 px-3",
                   )}
                 >
                   {tags.map((t, idx) => (
@@ -280,7 +280,7 @@ export const BlogWriting = () => {
                       key={t}
                       className={cn(
                         "flex items-center gap-x-1",
-                        "bg-neutral-700 px-3 py-1 text-[10px] rounded-[10px]"
+                        "bg-neutral-700 px-3 py-1 text-[10px] rounded-[10px]",
                       )}
                     >
                       {t}
@@ -297,18 +297,18 @@ export const BlogWriting = () => {
           </AnimatePresence>
 
           <motion.div
-          layoutId="toolbar"
-          animate={{
-            borderRadius: open ? "0px 0px 9px 9px" : "9999px"
-          }}
-          transition={{
-            duration: 0.3,
-            ease: "easeOut"
-          }}
+            layoutId="toolbar"
+            animate={{
+              borderRadius: open ? "0px 0px 9px 9px" : "9999px",
+            }}
+            transition={{
+              duration: 0.3,
+              ease: "easeOut",
+            }}
             className={cn(
               "flex items-center justify-between",
               "w-full bg-neutral-100 dark:bg-neutral-800 px-2 py-2 shadow",
-              "transition-all z-50"
+              "transition-all z-50",
             )}
           >
             <div className={cn("flex items-center gap-x-1")}>
@@ -316,7 +316,7 @@ export const BlogWriting = () => {
                 onClick={handleDelete}
                 className={cn(
                   "rounded-full bg-rose-500 text-white cursor-pointer px-3! py-4!",
-                  "hover:bg-rose-600 border border-rose-300"
+                  "hover:bg-rose-600 border border-rose-300",
                 )}
                 size={"sm"}
               >
@@ -337,7 +337,7 @@ export const BlogWriting = () => {
               size={"sm"}
               className={cn(
                 "bg-transparent text-black dark:text-white",
-                "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none"
+                "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none",
               )}
             >
               <Save />
@@ -349,7 +349,7 @@ export const BlogWriting = () => {
               onClick={() => setOpen((c) => !c)}
               className={cn(
                 "bg-transparent text-black dark:text-white",
-                "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none"
+                "hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-[9px] cursor-pointer shadow-none",
               )}
             >
               {!open ? <Plus /> : <X />}
@@ -362,7 +362,7 @@ export const BlogWriting = () => {
                 onClick={handlePublish}
                 className={cn(
                   "rounded-full bg-lime-500 text-black cursor-pointer px-3! py-4!",
-                  "hover:bg-lime-600 border border-lime-300"
+                  "hover:bg-lime-600 border border-lime-300",
                 )}
                 size={"sm"}
               >
