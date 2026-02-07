@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/better-auth/auth-client";
 import {
   Avatar,
   AvatarFallback,
@@ -139,6 +140,15 @@ export const UserProfile = () => {
             </button>
 
             <div
+              onClick={async () => {
+                await authClient.signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      router.push("/login")
+                    }
+                  }
+                })
+              }}
               className={cn(
                 "flex items-center gap-x-4 text-rose-500 px-4 py-2 text-[12px] mt-5 mx-3 cursor-pointer"
               )}
