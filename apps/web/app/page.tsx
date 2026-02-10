@@ -6,10 +6,12 @@ import { Container } from "@/components/wrapper/container";
 
 export default function Page() {
   return (
-   <Container>
+   <Container className="h-screen">
       <Navbar />
-      <Hero /> 
-      <AvatarSection />
+      <div className="flex flex-col items-center justify-center h-full">
+        <Hero /> 
+        <AvatarSection />
+      </div>
       <Footer />
    </Container>
   )
