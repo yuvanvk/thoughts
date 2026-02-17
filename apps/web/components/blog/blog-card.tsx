@@ -107,7 +107,7 @@ export const BlogCard = ({
           ? router.push(`/write/${blog.id}`)
           : router.push(`/blog/${blog.id}`);
       }}
-      className={`flex ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow relative`}
+      className={`flex h-full ${isColumn ? "flex-col" : "flex-row gap-x-2"}  cursor-pointer border dark:bg-[#121212] rounded-[10px] shadow relative`}
     >
       {deleteable && (
         <div

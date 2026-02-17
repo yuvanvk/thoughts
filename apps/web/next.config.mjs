@@ -1,10 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@workspace/ui"],
-  transpilePackages: ["@workspace/db"],
+  transpilePackages: ["@workspace/ui", "@workspace/db"],
   images: {
-    remotePatterns: [new URL("https://hogivzhzbulvwzrahhjx.supabase.co/**"), new URL("https://dqy38fnwh4fqs.cloudfront.net/**")]
-  }
-}
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "hogivzhzbulvwzrahhjx.supabase.co",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "dqy38fnwh4fqs.cloudfront.net",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+        pathname: "/**",
+      },
+    ],
+  },
+};
 
-export default nextConfig
+export default nextConfig;
+
