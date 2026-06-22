@@ -1,5 +1,3 @@
-![Thoughts](apps/web/public/images/thoughts.png)
-
 ## Thoughts
 
 `Thoughts` is a place to write, publish, and share your ideas with the world. It is designed for writers and readers who want a clean, focused experience without distractions.
@@ -14,8 +12,7 @@
 ### Project structure
 
 - **`apps/web`**: Main web application for reading and writing posts.
-- **`apps/web/public/images`**: Static assets, including the `thoughts.png` hero image used above.
-
+- **`apps/backend`**: TRPC backend serving the client requests.
 
 ### License
 
